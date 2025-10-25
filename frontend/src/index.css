@@ -1,5 +1,162 @@
-* {
-  box-sizing: border-box;
+/* =========================
+   Import fontów
+   ========================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+/* =========================
+   Reset i normalizacja
+   ========================= */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/* =========================
+   Zmienne kolorów
+   ========================= */
+:root {
+  --color-bg: #0e0e10;
+  --color-card: #1b1b1f;
+  --color-primary: #81a1ff;
+  --color-secondary: #7dcfff;
+  --color-text: #e6e6e6;
+  --color-text-secondary: #9b9b9b;
+  --color-border: #222;
+  --color-success: #57d38c;
+  --color-warning: #ffad60;
+  --color-error: #ff5c5c;
+
+  /* Fonty */
+  --font-main: "Inter", sans-serif;
+  --font-alt: "Manrope", "Rubik", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* =========================
+   Body i podstawowe elementy
+   ========================= */
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Nagłówki */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-main);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* Treść i paragrafy */
+p,
+span,
+li {
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+/* Tekst drugorzędny */
+.small-text,
+.text-secondary {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+/* Linki */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* Przyciski */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Listy */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Obrazy */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Karty / kontenery */
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Kod / liczby */
+code,
+pre,
+.mono {
+  font-family: var(--font-mono);
+  background-color: var(--color-card);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Scrollbar (opcjonalnie dark mode) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-card);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Main content padding */
+main {
+  padding: 2rem;
 }
