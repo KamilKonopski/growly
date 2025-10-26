@@ -1,6 +1,8 @@
 # Growly 
 
 > Aplikacja webowa do śledzenia nawyków, nauki i rozwoju osobistego z elementami wizualizacji danych i fiszek.
+>
+> Projekt Growly został stworzony jako projekt studencki w ramach studiów informatycznych.
 
 ---
 
