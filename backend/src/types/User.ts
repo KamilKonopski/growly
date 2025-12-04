@@ -5,3 +5,9 @@ export interface User {
   name: string;
   createdAt: string;
 }
+
+export interface JwtUser {
+  id: string;
+  email: string;
+  name: string;
+}
