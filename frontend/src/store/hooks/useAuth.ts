@@ -16,6 +16,7 @@ export const useAuth = () => {
     const res = await loginMutation({ email, password }).unwrap();
     if (res.user && res.token) {
       localStorage.setItem("token", res.token);
+      dispatch(setUser(res.user));
       dispatch(setMode("backend"));
     }
     return res;

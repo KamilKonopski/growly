@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import Login from "../components/Login/Login";
-import Dashboard from "../components/Dashboard/Dashboard";
-import NotFound from "../components/NotFound/NotFound";
-
-import ProtectedRoute from "./ProtectedRoute";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
+
+import Dashboard from "../components/Dashboard/Dashboard";
+import NotFound from "../components/NotFound/NotFound";
+import Authentication from "../components/Authentication/Authentication";
+import AuthRoute from "./AuthRoute";
 
 const AppRoutes = () => {
   const user = useSelector((state: RootState) => state.app.user);
@@ -14,26 +13,29 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Dynamiczne przekierowanie z "/" */}
         <Route
           path="/"
-          element={<Navigate to={user ? "/dashboard" : "/login"} replace />}
+          element={<Navigate to={user ? "/dashboard" : "/auth"} replace />}
         />
 
-        {/* Publiczne strony */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Chronione strony */}
         <Route
-          path="/dashboard"
+          path="/auth"
           element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
+            <AuthRoute requireAuth={false}>
+              <Authentication />
+            </AuthRoute>
           }
         />
 
-        {/* Strona 404 */}
+        <Route
+          path="/dashboard"
+          element={
+            <AuthRoute requireAuth={true}>
+              <Dashboard />
+            </AuthRoute>
+          }
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

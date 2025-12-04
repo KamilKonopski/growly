@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import AppRoutes from "./routes/AppRoutes";
 import { setUser, setMode } from "./store/appSlice";
@@ -14,6 +14,7 @@ interface JwtUser {
 
 const App = () => {
   const dispatch = useDispatch();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,7 +30,10 @@ const App = () => {
         localStorage.removeItem("token");
       }
     }
+    setCheckingAuth(false);
   }, [dispatch]);
+
+  if (checkingAuth) return <div>Ładowanie...</div>;
 
   return <AppRoutes />;
 };
