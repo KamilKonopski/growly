@@ -40,4 +40,4 @@ temp/
 coverage/
 
 /src/data/*
-!.gitkeep
+!/src/data/.gitkeep
