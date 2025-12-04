@@ -19,9 +19,7 @@ router.post(
     const existingEmail = users.find((u) => u.email === email);
 
     if (existingEmail) {
-      return res
-        .status(409)
-        .json({ message: "Taki email już istnieje", available: false });
+      return res.json({ available: false });
     }
 
     res.json({
