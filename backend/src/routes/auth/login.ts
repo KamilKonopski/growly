@@ -2,18 +2,18 @@ import { Router, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { readUsers } from "../utils/fileStorage";
+import { readUsers } from "../../utils/fileStorage";
 
 const router = Router();
 
 // POST /api/auth/login
 router.post(
-  "/login",
+  "/",
   [
     body("email").isEmail().withMessage("Podaj poprawny adres e-mail"),
     body("password")
-      .isLength({ min: 6 })
-      .withMessage("Hasło musi mieć co najmniej 6 znaków"),
+      .isLength({ min: 8 })
+      .withMessage("Hasło musi mieć co najmniej 8 znaków"),
   ],
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -31,8 +31,8 @@ router.post(
         .json({ message: "Nieprawidłowy e-mail lub hasło" });
     }
 
-    const isMath = await bcrypt.compare(password, user.password);
-    if (!isMath) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res
         .status(401)
         .json({ message: "Nieprawidłowy e-mail lub hasło" });

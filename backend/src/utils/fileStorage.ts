@@ -3,13 +3,28 @@ import path from "path";
 
 import { User } from "../types/User";
 
-const filePath = path.join(__dirname, "../data/users.json");
+// Funkcja do czytania dowolnego pliku JSON
+const readData = <T>(fileName: string): T[] => {
+  const filePath = path.join(__dirname, "../data", fileName);
 
-export const readUsers = (): User[] => {
+  if (!fs.existsSync(filePath)) return [];
+
   const data = fs.readFileSync(filePath, "utf-8");
-  return JSON.parse(data);
+  try {
+    return JSON.parse(data) as T[];
+  } catch (err) {
+    console.error(`Błąd parsowania pliku ${fileName}: `, err);
+    return [];
+  }
 };
 
-export const writeUsers = (users: User[]) => {
-  fs.writeFileSync(filePath, JSON.stringify(users, null, 2), "utf-8");
+// Funkcja do zapisu danych do pliku JSON
+const writeData = <T>(fileName: string, data: T[]): void => {
+  const filePath = path.join(__dirname, "../data", fileName);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
 };
+
+// TABELA USERS
+export const readUsers = () => readData<User>("users.json");
+export const writeUsers = (users: User[]) =>
+  writeData<User>("users.json", users);
