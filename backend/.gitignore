@@ -38,3 +38,6 @@ temp/
 
 # === Misc ===
 coverage/
+
+/src/data/*
+!.gitkeep
