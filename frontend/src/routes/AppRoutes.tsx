@@ -6,6 +6,7 @@ import Dashboard from "../components/Dashboard/Dashboard";
 import NotFound from "../components/NotFound/NotFound";
 import Authentication from "../components/Authentication/Authentication";
 import AuthRoute from "./AuthRoute";
+import MainLayout from "../components/Layout/MainLayout";
 
 const AppRoutes = () => {
   const user = useSelector((state: RootState) => state.app.user);
@@ -28,14 +29,15 @@ const AppRoutes = () => {
         />
 
         <Route
-          path="/dashboard"
           element={
             <AuthRoute requireAuth={true}>
-              <Dashboard />
+              <MainLayout />
             </AuthRoute>
           }
-        />
-
+        >
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
