@@ -36,6 +36,6 @@ export const writeHabits = (habits: Habit[]) =>
   writeData<Habit>("habits.json", habits);
 
 // HABITLOGS TABEL
-export const readHabitLogs = () => readData<HabitLog>("habits.json");
+export const readHabitLogs = () => readData<HabitLog>("habitLogs.json");
 export const writeHabitLogs = (habitLogs: HabitLog[]) =>
-  writeData<HabitLog>("habits.json", habitLogs);
+  writeData<HabitLog>("habitLogs.json", habitLogs);
