@@ -7,8 +7,20 @@ export const getHabitLogs = (
   habitId?: string,
   lastDays?: number
 ): HabitLog[] => {
-  const habitLogs = readHabitLogs();
-  return habitLogs.filter((l) => l.userId === userId);
+  let habitLogs = readHabitLogs().filter((l) => l.userId === userId);
+
+  if (habitId) {
+    habitLogs = habitLogs.filter((l) => l.habitId === habitId);
+  }
+
+  if (lastDays) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - lastDays);
+
+    habitLogs = habitLogs.filter((l) => new Date(l.date) >= cutoff);
+  }
+
+  return habitLogs;
 };
 
 // Get habit log by ID
