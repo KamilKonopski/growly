@@ -4,7 +4,7 @@ import habtLogsRoutes from "./habitLogs";
 
 const router = Router();
 
-router.use("/", habitsRoutes); // /api/habits
 router.use("/logs", habtLogsRoutes); // /api/habits/logs
+router.use("/", habitsRoutes); // /api/habits
 
 export default router;
