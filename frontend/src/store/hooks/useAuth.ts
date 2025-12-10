@@ -4,7 +4,7 @@ import {
   useRegisterMutation,
   useCheckEmailMutation,
 } from "../auth/authApi";
-import { setUser, setMode } from "../appSlice";
+import { setUser, setMode } from "../slices/appSlice";
 
 export const useAuth = () => {
   const dispatch = useDispatch();

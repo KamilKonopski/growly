@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import AppRoutes from "./routes/AppRoutes";
-import { setUser, setMode } from "./store/appSlice";
+import { setUser, setMode } from "./store/slices/appSlice";
 import { jwtDecode } from "jwt-decode";
 
 interface JwtUser {

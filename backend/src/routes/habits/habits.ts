@@ -18,6 +18,15 @@ router.get("/", authMiddleware, (req: AuthRequest, res: Response) => {
   res.json(habits);
 });
 
+// GET /api/habits/summary
+router.get("/summary", authMiddleware, (req: AuthRequest, res: Response) => {
+  const userId = req.user!.id;
+  const lastDays = req.query.lastDays ? Number(req.query.lastDays) : undefined;
+
+  const summary = getHabitsSummary(userId, lastDays);
+  res.json(summary);
+});
+
 // GET /api/habits/:id
 router.get("/:id", authMiddleware, (req: AuthRequest, res: Response) => {
   const habit = getHabitById(req.user!.id, req.params.id);
@@ -55,15 +64,6 @@ router.delete("/:id", authMiddleware, (req: AuthRequest, res: Response) => {
   }
 
   res.json({ success: true });
-});
-
-// GET /api/habits/summary
-router.get("/summary", authMiddleware, (req: AuthRequest, res: Response) => {
-  const userId = req.user!.id;
-  const lastDays = req.query.lastDays ? Number(req.query.lastDays) : undefined;
-
-  const summary = getHabitsSummary(userId, lastDays);
-  res.json(summary);
 });
 
 export default router;
