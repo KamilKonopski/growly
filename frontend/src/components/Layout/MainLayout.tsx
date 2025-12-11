@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useMeQuery } from "../../store/auth/authApi";
 import type { RootState } from "../../store/store";
 
+import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 
 import styles from "./MainLayout.module.css";
@@ -26,14 +27,7 @@ const MainLayout = () => {
     <div className={styles.layout}>
       <Sidebar />
       <div className={styles.main}>
-        <header className={styles.header}>
-          <div className={styles.logo}>Growly</div>
-          <div className={styles.section}>Dashboard</div>
-          <div className={styles.user}>
-            <span>Witaj {user?.name}!</span>
-            <img src="/avatar.png" alt="avatar" className={styles.avatar} />
-          </div>
-        </header>
+        <Header userName={user?.name} />
         <main className={styles.content}>
           <Outlet />
         </main>
