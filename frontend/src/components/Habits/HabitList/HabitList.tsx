@@ -1,5 +1,49 @@
+import HabitCard from "../HabitCard/HabitCard";
+import { easeOut, motion } from "framer-motion";
+
+import { useHabits } from "../../../store/hooks/useHabits";
+
+import styles from "./HabitList.module.css";
+
+const listVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: easeOut },
+  },
+};
+
 const HabitList = () => {
-  return <div>HabitList</div>;
+  const { habits, logs } = useHabits();
+
+  return habits.length ? (
+    <motion.div
+      className={styles.container}
+      variants={listVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {habits.map((habit) => (
+        <HabitCard
+          key={habit.id}
+          habit={habit}
+          logs={logs}
+          variants={itemVariants}
+        />
+      ))}
+    </motion.div>
+  ) : (
+    <p>Nie masz żadnych nawyków. Dodaj pierwszy nawyk.</p>
+  );
 };
 
 export default HabitList;

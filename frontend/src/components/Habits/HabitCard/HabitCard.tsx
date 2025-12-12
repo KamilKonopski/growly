@@ -1,5 +1,102 @@
-const HabitCard = () => {
-  return <div>HabitCard</div>;
+import type { Habit, HabitLog } from "../types/habit";
+import { motion, type Variants } from "framer-motion";
+import { useState } from "react";
+import { Check } from "lucide-react";
+import styles from "./HabitCard.module.css";
+import { useHabits } from "../../../store/hooks/useHabits";
+
+interface HabitCardProps {
+  habit: Habit;
+  logs?: HabitLog[];
+  variants?: Variants;
+}
+
+const HabitCard = ({ habit, logs = [], variants }: HabitCardProps) => {
+  const { createHabitLog, deleteHabitLog } = useHabits();
+  const [loading, setLoading] = useState(false);
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayLog = logs.find(
+    (log) => log.habitId === habit.id && log.date === todayStr
+  );
+  const completed = todayLog?.completed ?? false;
+
+  const handleCheckIn = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      if (completed && todayLog) {
+        await deleteHabitLog(todayLog.id);
+      } else {
+        await createHabitLog({
+          habitId: habit.id,
+          date: todayStr,
+          completed: true,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const frequencyLabel =
+    habit.frequency === "daily"
+      ? "Codziennie"
+      : habit.frequency === "weekly"
+      ? "Co tydzień"
+      : `Co ${habit.intervalDays} dni`;
+
+  const completedLogs = logs.filter(
+    (log) => log.habitId === habit.id && log.completed
+  ).length;
+
+  return (
+    <motion.article
+      className={styles.card}
+      variants={variants}
+      initial="hidden"
+      animate="visible"
+      whileHover={{
+        y: -8,
+        borderColor: "var(--color-primary)",
+        transition: { duration: 0.2, ease: "easeOut" },
+      }}
+    >
+      <h3 className={styles.name}>{habit.name}</h3>
+      <p className={styles.created}>
+        Utworzono: {new Date(habit.createdAt).toLocaleDateString()}
+      </p>
+      <p className={styles.frequency}>Częstotliwość: {frequencyLabel}</p>
+      {habit.timesPerWeek && (
+        <p className={styles.weekly}>
+          Powtórzenia w tygodniu: {habit.timesPerWeek}
+        </p>
+      )}
+      <p
+        className={completedLogs > 0 ? styles.progress : styles["not-progress"]}
+      >
+        Wykonano: {completedLogs} {completedLogs === 1 ? "raz" : "razy"}
+      </p>
+      <div className={styles["button_container"]}>
+        <button
+          onClick={handleCheckIn}
+          disabled={loading}
+          className={`${styles["checkin_btn"]} ${
+            completed ? styles.completed : ""
+          }`}
+        >
+          {completed ? (
+            <>
+              <Check size={16} className={styles.icon} /> Zrobione
+            </>
+          ) : (
+            <>Oznacz jako wykonane</>
+          )}
+        </button>
+        <button className={styles["edit_btn"]}>Edytuj nawyk</button>
+      </div>
+    </motion.article>
+  );
 };
 
 export default HabitCard;
