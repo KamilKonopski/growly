@@ -64,7 +64,7 @@ export const useHabits = () => {
 
     const habit: Habit = {
       ...data,
-      id: new Date().toDateString(),
+      id: Date.now().toString(),
       userId: "demo-user",
       createdAt: new Date().toISOString(),
     };
