@@ -13,4 +13,7 @@
 .button {
   display: flex;
   align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 8px;
+  color: var(--color-bg);
 }
