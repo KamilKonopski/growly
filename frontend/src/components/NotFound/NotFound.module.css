@@ -3,17 +3,17 @@
   padding: 60px 20px;
 }
 
-h1 {
+.container h1 {
   font-size: 72px;
   margin-bottom: 20px;
 }
 
-p {
+.container p {
   font-size: 18px;
   margin-bottom: 30px;
 }
 
-button {
+.container button {
   padding: 12px 24px;
   border-radius: 8px;
   border: none;
@@ -23,6 +23,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.container button:hover {
   background-color: #3730a3;
 }
