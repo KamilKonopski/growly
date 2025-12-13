@@ -1,17 +1,21 @@
-import type { Habit, HabitLog } from "../types/habit";
-import { motion, type Variants } from "framer-motion";
 import { useState } from "react";
+import { motion, type Variants } from "framer-motion";
 import { Check } from "lucide-react";
-import styles from "./HabitCard.module.css";
+
 import { useHabits } from "../../../store/hooks/useHabits";
+
+import type { Habit, HabitLog } from "../types/habit";
+
+import styles from "./HabitCard.module.css";
 
 interface HabitCardProps {
   habit: Habit;
   logs?: HabitLog[];
   variants?: Variants;
+  onEdit?: () => void;
 }
 
-const HabitCard = ({ habit, logs = [], variants }: HabitCardProps) => {
+const HabitCard = ({ habit, logs = [], variants, onEdit }: HabitCardProps) => {
   const { createHabitLog, deleteHabitLog } = useHabits();
   const [loading, setLoading] = useState(false);
 
@@ -93,7 +97,9 @@ const HabitCard = ({ habit, logs = [], variants }: HabitCardProps) => {
             <>Oznacz jako wykonane</>
           )}
         </button>
-        <button className={styles["edit_btn"]}>Edytuj nawyk</button>
+        <button className={styles["edit_btn"]} onClick={onEdit}>
+          Edytuj nawyk
+        </button>
       </div>
     </motion.article>
   );

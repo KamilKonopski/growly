@@ -3,6 +3,8 @@ import { easeOut, motion } from "framer-motion";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 
+import type { Habit } from "../types/habit";
+
 import styles from "./HabitList.module.css";
 
 const listVariants = {
@@ -22,7 +24,11 @@ const itemVariants = {
   },
 };
 
-const HabitList = () => {
+interface HabitListProps {
+  onEdit: (habit: Habit) => void;
+}
+
+const HabitList = ({ onEdit }: HabitListProps) => {
   const { habits, logs } = useHabits();
 
   return habits.length ? (
@@ -38,6 +44,7 @@ const HabitList = () => {
           habit={habit}
           logs={logs}
           variants={itemVariants}
+          onEdit={() => onEdit(habit)}
         />
       ))}
     </motion.div>

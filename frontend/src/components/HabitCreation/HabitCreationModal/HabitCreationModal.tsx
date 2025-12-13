@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
 import { useHabits } from "../../../store/hooks/useHabits";
 import type { CreateHabitRequest } from "../../../store/habits/habitsApi.types";
+
+import type { Habit } from "../../Habits/types/habit";
 
 import styles from "./HabitCreationModal.module.css";
 
@@ -8,28 +11,54 @@ interface HabitCreactionModalProps {
   onClose: () => void;
   onCloseAttempt: () => void;
   onDirtyChange: (dirty: boolean) => void;
+  habit?: Habit | null;
 }
 
 const HabitCreationModal = ({
   onClose,
   onCloseAttempt,
   onDirtyChange,
+  habit,
 }: HabitCreactionModalProps) => {
-  const { createHabit } = useHabits();
+  const { createHabit, updateHabit } = useHabits();
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(habit?.name ?? "");
   const [frequency, setFrequency] = useState<
     "daily" | "weekly" | "every_x_days"
-  >("daily");
-  const [timesPerWeek, setTimesPerWeek] = useState(3);
-  const [intervalDays, setIntervalDays] = useState(2);
+  >(habit?.frequency ?? "daily");
+  const [timesPerWeek, setTimesPerWeek] = useState(habit?.timesPerWeek ?? 3);
+  const [intervalDays, setIntervalDays] = useState(habit?.intervalDays ?? 2);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (habit) {
+      setName(habit.name);
+      setFrequency(habit.frequency);
+      setTimesPerWeek(habit.timesPerWeek ?? 3);
+      setIntervalDays(habit.intervalDays ?? 2);
+    } else {
+      setName("");
+      setFrequency("daily");
+      setTimesPerWeek(3);
+      setIntervalDays(2);
+    }
+  }, [habit]);
+
+  const initialValues = useMemo(
+    () => ({
+      name: habit?.name ?? "",
+      frequency: habit?.frequency ?? "daily",
+      timesPerWeek: habit?.timesPerWeek ?? 3,
+      intervalDays: habit?.intervalDays ?? 2,
+    }),
+    [habit]
+  );
+
   const isDirty =
-    name !== "" ||
-    frequency !== "daily" ||
-    timesPerWeek !== 3 ||
-    intervalDays !== 2;
+    name !== initialValues.name ||
+    frequency !== initialValues.frequency ||
+    timesPerWeek !== initialValues.timesPerWeek ||
+    intervalDays !== initialValues.intervalDays;
 
   useEffect(() => {
     onDirtyChange(isDirty);
@@ -51,14 +80,21 @@ const HabitCreationModal = ({
       intervalDays: frequency === "every_x_days" ? intervalDays : 1,
     };
 
-    await createHabit(payload);
+    if (habit) {
+      await updateHabit(habit.id, payload);
+    } else {
+      await createHabit(payload);
+    }
+
     setLoading(false);
     onClose();
   };
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Dodaj nowy nawyk</h2>
+      <h2 className={styles.title}>
+        {habit ? "Edytuj nawyk" : "Dodaj nowy nawyk"}
+      </h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
           Nazwa nawyku
@@ -120,7 +156,7 @@ const HabitCreationModal = ({
             Anuluj
           </button>
           <button type="submit" className={styles.submit} disabled={loading}>
-            {loading ? "Zapisywanie..." : "Dodaj"}
+            {loading ? "Zapisywanie..." : habit ? "Zapisz zmiany" : "Dodaj"}
           </button>
         </div>
       </form>
