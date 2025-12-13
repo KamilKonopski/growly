@@ -6,6 +6,8 @@ import HabitCreationModal from "../HabitCreation/HabitCreationModal/HabitCreatio
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
 import Modal from "../../common/components/Modal/Modal";
 
+import type { Habit } from "./types/habit";
+
 import styles from "./Habits.module.css";
 
 const Habits = () => {
@@ -13,8 +15,18 @@ const Habits = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [shouldReopen, setShouldReopen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
 
-  const handleOpenModal = () => setOpenModal(true);
+  const handleOpenModal = () => {
+    setEditingHabit(null);
+    setOpenModal(true);
+  };
+
+  const handleEditHabit = (habit: Habit) => {
+    setEditingHabit(habit);
+    setOpenModal(true);
+  };
+
   const handleForceCloseModal = () => setOpenModal(false);
 
   const handleCloseAttempt = () => {
@@ -50,7 +62,7 @@ const Habits = () => {
             Dodaj nawyk
           </button>
         </div>
-        <HabitList />
+        <HabitList onEdit={handleEditHabit} />
         <div>
           <p>Kalendarz</p>
         </div>
@@ -63,6 +75,7 @@ const Habits = () => {
           onClose={handleForceCloseModal}
           onCloseAttempt={handleCloseAttempt}
           onDirtyChange={setIsDirty}
+          habit={editingHabit}
         />
       </Modal>
       <Modal isOpen={showConfirm} onClose={handleConfirmStay}>

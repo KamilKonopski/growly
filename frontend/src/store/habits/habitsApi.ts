@@ -48,7 +48,7 @@ export const habitsApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (_r, _e, arg) => [{ type: "Habit", id: arg.id }],
+      invalidatesTags: ["Habit"],
     }),
     deleteHabit: builder.mutation<boolean, string>({
       query: (id) => ({
