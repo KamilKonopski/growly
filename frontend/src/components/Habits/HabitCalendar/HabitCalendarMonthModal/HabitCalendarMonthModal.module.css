@@ -1,0 +1,79 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.header_cell {
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day {
+  min-height: 56px;
+  max-height: 100px;
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.date {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.habit_label_done {
+  background-color: var(--color-success);
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  margin-top: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.empty {
+  height: 40px;
+}
+
+.today {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-text);
+}
+
+.today > * {
+  color: var(--color-bg);
+}

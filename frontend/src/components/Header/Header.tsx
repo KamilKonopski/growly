@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-import { getSectionName } from "../../utils/getSectionName";
+import { getSectionName } from "../../common/utils/getSectionName";
 
 import styles from "./Header.module.css";
 

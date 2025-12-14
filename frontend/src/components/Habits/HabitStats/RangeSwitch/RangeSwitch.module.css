@@ -1,0 +1,21 @@
+.range-switch {
+  display: flex;
+  gap: 8px;
+  flex-basis: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.range-switch button {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.range-switch .active {
+  background: var(--color-primary);
+  color: white;
+}

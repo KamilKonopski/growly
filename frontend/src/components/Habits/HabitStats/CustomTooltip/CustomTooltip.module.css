@@ -1,0 +1,7 @@
+.tooltip {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
