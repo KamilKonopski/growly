@@ -1,0 +1,14 @@
+.wrapper {
+  background-color: var(--color-card);
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.month_btn {
+  margin-top: 16px;
+  background-color: var(--color-primary);
+  color: #000;
+  border-radius: 8px;
+}
