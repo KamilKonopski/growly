@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 
-import type { Habit, HabitLog } from "../types/habit";
+import type { Habit, HabitLog } from "../../../common/types/habit";
 
 import styles from "./HabitCard.module.css";
+import { componentMountVariants } from "../config";
 
 interface HabitCardProps {
   habit: Habit;
   logs?: HabitLog[];
-  variants?: Variants;
   onEdit?: () => void;
 }
 
-const HabitCard = ({ habit, logs = [], variants, onEdit }: HabitCardProps) => {
+const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
   const { createHabitLog, deleteHabitLog } = useHabits();
   const [loading, setLoading] = useState(false);
 
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = new Date().toLocaleDateString().split("T")[0];
   const todayLog = logs.find(
     (log) => log.habitId === habit.id && log.date === todayStr
   );
@@ -57,7 +57,7 @@ const HabitCard = ({ habit, logs = [], variants, onEdit }: HabitCardProps) => {
   return (
     <motion.article
       className={styles.card}
-      variants={variants}
+      variants={componentMountVariants}
       initial="hidden"
       animate="visible"
       whileHover={{

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import HabitList from "./HabitList/HabitList";
-import HabitCreationModal from "../HabitCreation/HabitCreationModal/HabitCreationModal";
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
+import HabitCalendar from "./HabitCalendar/HabitCalendar";
+import HabitCreationModal from "../HabitCreation/HabitCreationModal/HabitCreationModal";
+import HabitList from "./HabitList/HabitList";
+import HabitStats from "./HabitStats/HabitStats";
 import Modal from "../../common/components/Modal/Modal";
 
-import type { Habit } from "./types/habit";
+import type { Habit } from "../../common/types/habit";
 
 import styles from "./Habits.module.css";
 
@@ -63,12 +65,8 @@ const Habits = () => {
           </button>
         </div>
         <HabitList onEdit={handleEditHabit} />
-        <div>
-          <p>Kalendarz</p>
-        </div>
-        <div>
-          <p>Statystyki</p>
-        </div>
+        <HabitCalendar />
+        <HabitStats />
       </section>
       <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
         <HabitCreationModal
