@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useHabits } from "../../../store/hooks/useHabits";
 import type { CreateHabitRequest } from "../../../store/habits/habitsApi.types";
 
-import type { Habit } from "../../Habits/types/habit";
+import type { Habit } from "../../../common/types/habit";
 
 import styles from "./HabitCreationModal.module.css";
 
