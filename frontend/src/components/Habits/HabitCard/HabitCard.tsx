@@ -19,7 +19,7 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
   const { createHabitLog, deleteHabitLog } = useHabits();
   const [loading, setLoading] = useState(false);
 
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = new Date().toLocaleDateString().split("T")[0];
   const todayLog = logs.find(
     (log) => log.habitId === habit.id && log.date === todayStr
   );
