@@ -1,80 +1,80 @@
 # Growly 
 
-> Aplikacja webowa do śledzenia nawyków, nauki i rozwoju osobistego z elementami wizualizacji danych i fiszek.
+> A web application for habit tracking, learning, and personal development, featuring data visualization and flashcards.
 >
-> Projekt Growly został stworzony jako projekt studencki w ramach studiów informatycznych.
+> The Growly project was created as a student project as part of computer science studies.
 
 ---
 
-## Cel aplikacji
+## Application Purpose
 
-Growly powstało, aby pomóc użytkownikom w:
-- Systematycznym rozwijaniu nawyków,
-- Organizowaniu ścieżek nauki,
-- Tworzeniu i powtarzaniu fiszek,
-- Śledzeniu postępów za pomocą wykresów i statystyk.
+- Growly was created to help users with:
+- Building habits consistently,
+- Organizing learning paths,
+- Creating and reviewing flashcards,
+- Tracking progress through charts and statistics.
 
-Aplikacja łączy w sobie produktywność, rozwój osobisty i naukę w jednym interaktywnym narzędziu.
+The application combines productivity, personal development, and learning into one interactive tool.
 
 ---
 
-## Podstawowe funkcjonalności
+## Core Features
 
 1. **Dashboard**
-   - Podsumowanie codziennych i tygodniowych aktywności,
-   - Wykresy aktywności i postępów w nauce,
-   - Motywacyjne cytaty dnia.
+   - Overview of daily and weekly activities,
+   - Activity and learning progress charts,
+   - Daily motivational quotes.
 
-2. **Nawyki**
-   - Tworzenie i edycja własnych nawyków,
-   - Śledzenie postępów za pomocą procentów, kalendarza i wykresów liniowych,
-   - Check-in codzienny dla wykonanych nawyków.
+2. **Habits**
+   - Creating and editing custom habits,
+   - Tracking progress using percentages, calendar views, and line charts,
+   - Daily check-ins for completed habits.
 
-3. **Nauka**
-   - Tworzenie ścieżek nauki (tematów, lekcji),
-   - Zakładka fiszek dla powtarzania materiału,
-   - Tryb nauki fiszek („znam / nie znam”) i statystyki postępów.
+3. **Learning**
+   - Creating learning paths (topics, lessons),
+   - Flashcards tab for reviewing materials,
+   - Flashcard study mode (“know / don’t know”) with progress statistics.
 
-4. **Statystyki**
-   - Analiza aktywności użytkownika w czasie,
-   - Heatmapa, wykresy liniowe, porównania ścieżek nauki,
-   - Wnioski i podsumowania osiągnięć.
+4. **Statistics**
+   - Analysis of user activity over time,
+   - Heatmaps, line charts, and learning path comparisons,
+   - Insights and achievement summaries.
 
-5. **Ustawienia**
-   - Zarządzanie profilem użytkownika,
-   - Preferencje i eksport/import danych,
-   - Powiadomienia i informacje o wersji.
+5. **Settings**
+   - User profile management,
+   - Preferences and data export/import,
+   - Notifications and version information.
 
 ---
 
-## Technologie
+## Technologies
 
 - **Frontend:** React + TypeScript + CSS Modules  
-- **Backend:** Express.js (lokalny / JSON)  
-- **Wykresy:** Chart.js / Recharts  
-- **Stylizacja:** Ciemny motyw, minimalistyczny interfejs  
-- **Font:** Inter (czytelny, nowoczesny)
+- **Backend:** Express.js (local / JSON)  
+- **Charts:** Chart.js / Recharts  
+- **Styling:** Dark theme, minimalist interface 
+- **Font:** Inter (clean, modern, and readable)
 
 ---
 
-## Użytkownicy / Role
+## Users / Roles
 
-- **Użytkownik końcowy:** osoba śledząca swoje nawyki i naukę, tworząca ścieżki i fiszki.  
+- **End User:** A person tracking habits and learning progress, creating learning paths and flashcards. 
 
 ---
 
-## Instalacja i uruchomienie
+## Installation & Running the App
 
 ```bash
-# Klonowanie repo
-git clone https://github.com/KamilKonopski/growly.git <nazwa_folderu>
-cd <nazwa_folderu>
+# Clone the repository
+git clone https://github.com/KamilKonopski/growly.git <folder_name>
+cd <folder_name>
 
-# Instalacja zależności
+# Install dependencies
 npm install
 
-# Uruchomienie aplikacji w trybie developerskim
-npm start
+# Run the app in development mode
+npm run dev
 
-# Backend lokalny (Express JSON server)
-npm run server
+# Local backend (Express JSON server)
+npm run dev
