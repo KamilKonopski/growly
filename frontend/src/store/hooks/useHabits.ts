@@ -109,14 +109,6 @@ export const useHabits = () => {
   const summary = useGetHabitsSummaryQuery(undefined, {
     skip: mode !== "backend",
   });
-  const habitLogsByRange = useGetHabitLogsByDateRangeQuery(
-    { startDate: "", endDate: " " },
-    { skip: true }
-  );
-  const habitLogsStats = useGetHabitLogStatsQuery(
-    { habitId: "", lastDays: undefined },
-    { skip: true }
-  );
 
   return {
     mode,
@@ -133,8 +125,9 @@ export const useHabits = () => {
     // Read-only backend endpoints
     getHabitById: useGetHabitByIdQuery,
     getHabitLogById: useGetHabitLogByIdQuery,
+    getHabitLogsByRange: useGetHabitLogsByDateRangeQuery,
+    getHabitLogsStats: useGetHabitLogStatsQuery,
+
     summary,
-    habitLogsByRange,
-    habitLogsStats,
   };
 };
