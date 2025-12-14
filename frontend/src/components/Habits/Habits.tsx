@@ -5,6 +5,7 @@ import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLea
 import HabitCalendar from "./HabitCalendar/HabitCalendar";
 import HabitCreationModal from "../HabitCreation/HabitCreationModal/HabitCreationModal";
 import HabitList from "./HabitList/HabitList";
+import HabitStats from "./HabitStats/HabitStats";
 import Modal from "../../common/components/Modal/Modal";
 
 import type { Habit } from "../../common/types/habit";
@@ -65,9 +66,7 @@ const Habits = () => {
         </div>
         <HabitList onEdit={handleEditHabit} />
         <HabitCalendar />
-        <div>
-          <p>Statystyki</p>
-        </div>
+        <HabitStats />
       </section>
       <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
         <HabitCreationModal
