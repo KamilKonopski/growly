@@ -3,8 +3,7 @@ export interface Habit {
   userId: string;
   name: string;
   frequency: "daily" | "weekly" | "every_x_days";
-  timesPerWeek?: number; // if weekly
-  intervalDays: number; // if every_x_days
+  intervalDays?: number; // if every_x_days
   createdAt: string;
 }
 
@@ -14,4 +13,9 @@ export interface HabitLog {
   userId: string;
   date: string; // format ISO "YYYY-MM-DD"
   completed: boolean;
+}
+
+export interface HabitStatus {
+  habitId: string;
+  isCompleted: boolean;
 }

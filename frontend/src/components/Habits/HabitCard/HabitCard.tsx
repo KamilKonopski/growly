@@ -16,22 +16,26 @@ interface HabitCardProps {
 }
 
 const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
-  const { createHabitLog, deleteHabitLog } = useHabits();
+  const { createHabitLog, deleteHabitLog, habitStatus } = useHabits();
   const [loading, setLoading] = useState(false);
 
-  const todayStr = new Date().toLocaleDateString().split("T")[0];
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  const status = habitStatus.find((s) => s.habitId === habit.id);
+  const completed = status?.isCompleted ?? false;
+
   const todayLog = logs.find(
     (log) => log.habitId === habit.id && log.date === todayStr
   );
-  const completed = todayLog?.completed ?? false;
 
   const handleCheckIn = async () => {
     if (loading) return;
     setLoading(true);
+
     try {
       if (completed && todayLog) {
         await deleteHabitLog(todayLog.id);
-      } else {
+      } else if (!completed) {
         await createHabitLog({
           habitId: habit.id,
           date: todayStr,
@@ -67,37 +71,38 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
       }}
     >
       <h3 className={styles.name}>{habit.name}</h3>
+
       <p className={styles.created}>
         Utworzono: {new Date(habit.createdAt).toLocaleDateString()}
       </p>
+
       <p className={styles.frequency}>Częstotliwość: {frequencyLabel}</p>
-      {habit.timesPerWeek && (
-        <p className={styles.weekly}>
-          Powtórzenia w tygodniu: {habit.timesPerWeek}
-        </p>
-      )}
+
       <p
         className={completedLogs > 0 ? styles.progress : styles["not-progress"]}
       >
         Wykonano: {completedLogs} {completedLogs === 1 ? "raz" : "razy"}
       </p>
-      <div className={styles["button_container"]}>
+
+      <div className={styles.button_container}>
         <button
           onClick={handleCheckIn}
           disabled={loading}
-          className={`${styles["checkin_btn"]} ${
+          className={`${styles.checkin_btn} ${
             completed ? styles.completed : ""
           }`}
         >
           {completed ? (
             <>
-              <Check size={16} className={styles.icon} /> Zrobione
+              <Check size={16} className={styles.icon} />
+              Zrobione
             </>
           ) : (
-            <>Oznacz jako wykonane</>
+            "Oznacz jako wykonane"
           )}
         </button>
-        <button className={styles["edit_btn"]} onClick={onEdit}>
+
+        <button className={styles.edit_btn} onClick={onEdit}>
           Edytuj nawyk
         </button>
       </div>

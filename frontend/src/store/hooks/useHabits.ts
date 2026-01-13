@@ -15,6 +15,7 @@ import {
   useDeleteHabitLogMutation,
   useGetHabitLogsByDateRangeQuery,
   useGetHabitLogStatsQuery,
+  useGetHabitsStatusQuery,
 } from "../habits/habitsApi";
 
 import {
@@ -109,6 +110,12 @@ export const useHabits = () => {
   const summary = useGetHabitsSummaryQuery(undefined, {
     skip: mode !== "backend",
   });
+  const statusQuery = useGetHabitsStatusQuery(
+    {},
+    {
+      skip: mode !== "backend",
+    }
+  );
 
   return {
     mode,
@@ -129,5 +136,6 @@ export const useHabits = () => {
     getHabitLogsStats: useGetHabitLogStatsQuery,
 
     summary,
+    habitStatus: statusQuery.data ?? [],
   };
 };

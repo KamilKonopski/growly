@@ -119,6 +119,16 @@ export const habitsApi = createApi({
       }),
       providesTags: ["HabitLog"],
     }),
+    getHabitsStatus: builder.query<
+      { habitId: string; isCompleted: boolean }[],
+      { date?: string }
+    >({
+      query: (params) => ({
+        url: "/habits/status",
+        params,
+      }),
+      providesTags: ["HabitLog"],
+    }),
   }),
 });
 
@@ -137,4 +147,6 @@ export const {
   useDeleteHabitLogMutation,
   useGetHabitLogsByDateRangeQuery,
   useGetHabitLogStatsQuery,
+
+  useGetHabitsStatusQuery,
 } = habitsApi;
