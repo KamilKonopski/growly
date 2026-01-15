@@ -34,6 +34,7 @@ body {
   --color-success: #57d38c;
   --color-warning: #ffad60;
   --color-error: #ff5c5c;
+  --color-neutral: #cfcfcf;
 
   /* Fonty */
   --font-main: "Inter", sans-serif;
