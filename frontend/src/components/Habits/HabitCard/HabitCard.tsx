@@ -5,9 +5,9 @@ import { Check } from "lucide-react";
 import { useHabits } from "../../../store/hooks/useHabits";
 
 import type { Habit, HabitLog } from "../../../common/types/habit";
+import { componentMountVariants } from "../config";
 
 import styles from "./HabitCard.module.css";
-import { componentMountVariants } from "../config";
 
 interface HabitCardProps {
   habit: Habit;
@@ -39,7 +39,6 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
         await createHabitLog({
           habitId: habit.id,
           date: todayStr,
-          completed: true,
         });
       }
     } finally {
@@ -54,9 +53,7 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
       ? "Co tydzień"
       : `Co ${habit.intervalDays} dni`;
 
-  const completedLogs = logs.filter(
-    (log) => log.habitId === habit.id && log.completed
-  ).length;
+  const completedLogs = logs.filter((log) => log.habitId === habit.id).length;
 
   return (
     <motion.article
@@ -79,9 +76,11 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
       <p className={styles.frequency}>Częstotliwość: {frequencyLabel}</p>
 
       <p
-        className={completedLogs > 0 ? styles.progress : styles["not-progress"]}
+        className={
+          completedLogs === 0 ? styles["no-history"] : styles["has-history"]
+        }
       >
-        Wykonano: {completedLogs} {completedLogs === 1 ? "raz" : "razy"}
+        Wykonano łącznie: {completedLogs} {completedLogs === 1 ? "raz" : "razy"}
       </p>
 
       <div className={styles.button_container}>
