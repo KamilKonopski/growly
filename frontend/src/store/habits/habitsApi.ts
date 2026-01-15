@@ -48,7 +48,7 @@ export const habitsApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (_r, _e, arg) => [{ type: "Habit", id: arg.id }],
+      invalidatesTags: ["Habit"],
     }),
     deleteHabit: builder.mutation<boolean, string>({
       query: (id) => ({
@@ -107,6 +107,7 @@ export const habitsApi = createApi({
     >({
       query: ({ startDate, endDate }) =>
         `/habits/logs/range/${startDate}/${endDate}`,
+      providesTags: ["HabitLog"],
     }),
     getHabitLogStats: builder.query<
       HabitLogStats,
@@ -116,6 +117,17 @@ export const habitsApi = createApi({
         url: `habits/logs/stats/${habitId}`,
         params: { lastDays },
       }),
+      providesTags: ["HabitLog"],
+    }),
+    getHabitsStatus: builder.query<
+      { habitId: string; isCompleted: boolean }[],
+      { date?: string }
+    >({
+      query: (params) => ({
+        url: "/habits/status",
+        params,
+      }),
+      providesTags: ["HabitLog"],
     }),
   }),
 });
@@ -135,4 +147,6 @@ export const {
   useDeleteHabitLogMutation,
   useGetHabitLogsByDateRangeQuery,
   useGetHabitLogStatsQuery,
+
+  useGetHabitsStatusQuery,
 } = habitsApi;

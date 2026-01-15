@@ -15,6 +15,7 @@ import {
   useDeleteHabitLogMutation,
   useGetHabitLogsByDateRangeQuery,
   useGetHabitLogStatsQuery,
+  useGetHabitsStatusQuery,
 } from "../habits/habitsApi";
 
 import {
@@ -64,7 +65,7 @@ export const useHabits = () => {
 
     const habit: Habit = {
       ...data,
-      id: new Date().toDateString(),
+      id: Date.now().toString(),
       userId: "demo-user",
       createdAt: new Date().toISOString(),
     };
@@ -109,17 +110,20 @@ export const useHabits = () => {
   const summary = useGetHabitsSummaryQuery(undefined, {
     skip: mode !== "backend",
   });
-  const habitLogsByRange = useGetHabitLogsByDateRangeQuery(
-    { startDate: "", endDate: " " },
-    { skip: true }
+  const statusQuery = useGetHabitsStatusQuery(
+    {},
+    {
+      skip: mode !== "backend",
+    }
   );
-  const habitLogsStats = useGetHabitLogStatsQuery(
-    { habitId: "", lastDays: undefined },
-    { skip: true }
-  );
+
+  const isLoading =
+    mode === "backend" && (habitsQuery.isLoading || habitLogsQuery.isLoading);
 
   return {
     mode,
+    isLoading,
+
     // Habits
     habits: mode === "backend" ? habitsQuery.data ?? [] : local.habits,
     createHabit,
@@ -133,8 +137,10 @@ export const useHabits = () => {
     // Read-only backend endpoints
     getHabitById: useGetHabitByIdQuery,
     getHabitLogById: useGetHabitLogByIdQuery,
+    getHabitLogsByRange: useGetHabitLogsByDateRangeQuery,
+    getHabitLogsStats: useGetHabitLogStatsQuery,
+
     summary,
-    habitLogsByRange,
-    habitLogsStats,
+    habitStatus: statusQuery.data ?? [],
   };
 };

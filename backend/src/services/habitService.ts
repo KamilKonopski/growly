@@ -23,7 +23,7 @@ export const createHabit = (
   const newHabit: Habit = {
     id: Date.now().toString(),
     userId,
-    createdAt: Date.now().toString(),
+    createdAt: new Date().toISOString(),
     ...habitData,
   };
 

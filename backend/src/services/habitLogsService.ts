@@ -36,8 +36,7 @@ export const getHabitLogById = (
 export const createHabitLog = (
   userId: string,
   habitId: string,
-  date: string,
-  completed: boolean
+  date: string
 ): HabitLog => {
   const habitLogs = readHabitLogs();
 
@@ -46,7 +45,6 @@ export const createHabitLog = (
     userId,
     habitId,
     date,
-    completed,
   };
 
   habitLogs.push(newHabitLog);
@@ -110,7 +108,7 @@ export const getHabitCompletionStats = (
   lastDays?: number
 ): { completed: number; total: number } => {
   const habitLogs = getHabitLogs(userId).filter((l) => l.habitId === habitId);
-  const completedHabits = habitLogs.filter((l) => l.completed).length;
+  const completedHabits = habitLogs.length;
 
   return {
     completed: completedHabits,
