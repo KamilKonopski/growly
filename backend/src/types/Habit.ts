@@ -12,7 +12,6 @@ export interface HabitLog {
   habitId: string;
   userId: string;
   date: string; // format ISO "YYYY-MM-DD"
-  completed: boolean;
 }
 
 export interface HabitStatus {

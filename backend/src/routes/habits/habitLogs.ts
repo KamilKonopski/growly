@@ -41,15 +41,13 @@ router.get("/:logId", authMiddleware, (req: AuthRequest, res: Response) => {
 // POST /api/habits/logs
 router.post("/", authMiddleware, (req: AuthRequest, res: Response) => {
   const userId = req.user!.id;
-  const { habitId, date, completed } = req.body;
+  const { habitId, date } = req.body;
 
-  if (!habitId || !date || completed === undefined) {
-    return res
-      .status(400)
-      .json({ message: "Wymagane pola: habitId, date, completed" });
+  if (!habitId || !date === undefined) {
+    return res.status(400).json({ message: "Wymagane pola: habitId, date" });
   }
 
-  const log = createHabitLog(userId, habitId, date, completed);
+  const log = createHabitLog(userId, habitId, date);
   res.status(201).json(log);
 });
 

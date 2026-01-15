@@ -1,8 +1,11 @@
+import EmptyState from "../../../common/components/EmptyState/EmptyState";
 import HabitCard from "../HabitCard/HabitCard";
+import { Spinner } from "../../../common/components/Spinner/Spinner";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 
 import type { Habit } from "../../../common/types/habit";
+import { componentMountVariants } from "../config";
 
 import styles from "./HabitList.module.css";
 
@@ -11,9 +14,25 @@ interface HabitListProps {
 }
 
 const HabitList = ({ onEdit }: HabitListProps) => {
-  const { habits, logs } = useHabits();
+  const { habits, logs, isLoading } = useHabits();
 
-  return habits.length ? (
+  if (isLoading) {
+    return (
+      <div className={styles.loading}>
+        <Spinner label="Ładowanie nawyków..." />
+      </div>
+    );
+  }
+
+  if (!habits.length) {
+    return (
+      <EmptyState animationVariant={componentMountVariants}>
+        <p>Nie masz żadnych nawyków. Dodaj pierwszy nawyk.</p>
+      </EmptyState>
+    );
+  }
+
+  return (
     <div className={styles.container}>
       {habits.map((habit) => (
         <HabitCard
@@ -24,8 +43,6 @@ const HabitList = ({ onEdit }: HabitListProps) => {
         />
       ))}
     </div>
-  ) : (
-    <p>Nie masz żadnych nawyków. Dodaj pierwszy nawyk.</p>
   );
 };
 

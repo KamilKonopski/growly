@@ -117,8 +117,13 @@ export const useHabits = () => {
     }
   );
 
+  const isLoading =
+    mode === "backend" && (habitsQuery.isLoading || habitLogsQuery.isLoading);
+
   return {
     mode,
+    isLoading,
+
     // Habits
     habits: mode === "backend" ? habitsQuery.data ?? [] : local.habits,
     createHabit,

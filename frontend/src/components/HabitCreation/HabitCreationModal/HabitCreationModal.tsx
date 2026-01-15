@@ -26,7 +26,6 @@ const HabitCreationModal = ({
   const [frequency, setFrequency] = useState<
     "daily" | "weekly" | "every_x_days"
   >(habit?.frequency ?? "daily");
-  const [timesPerWeek, setTimesPerWeek] = useState(habit?.timesPerWeek ?? 3);
   const [intervalDays, setIntervalDays] = useState(habit?.intervalDays ?? 2);
   const [loading, setLoading] = useState(false);
 
@@ -34,12 +33,10 @@ const HabitCreationModal = ({
     if (habit) {
       setName(habit.name);
       setFrequency(habit.frequency);
-      setTimesPerWeek(habit.timesPerWeek ?? 3);
       setIntervalDays(habit.intervalDays ?? 2);
     } else {
       setName("");
       setFrequency("daily");
-      setTimesPerWeek(3);
       setIntervalDays(2);
     }
   }, [habit]);
@@ -48,7 +45,6 @@ const HabitCreationModal = ({
     () => ({
       name: habit?.name ?? "",
       frequency: habit?.frequency ?? "daily",
-      timesPerWeek: habit?.timesPerWeek ?? 3,
       intervalDays: habit?.intervalDays ?? 2,
     }),
     [habit]
@@ -57,7 +53,6 @@ const HabitCreationModal = ({
   const isDirty =
     name !== initialValues.name ||
     frequency !== initialValues.frequency ||
-    timesPerWeek !== initialValues.timesPerWeek ||
     intervalDays !== initialValues.intervalDays;
 
   useEffect(() => {
@@ -76,7 +71,6 @@ const HabitCreationModal = ({
     const payload: CreateHabitRequest = {
       name,
       frequency,
-      timesPerWeek: frequency === "weekly" ? timesPerWeek : undefined,
       intervalDays: frequency === "every_x_days" ? intervalDays : 1,
     };
 
@@ -118,23 +112,10 @@ const HabitCreationModal = ({
             }
           >
             <option value="daily">Codziennie</option>
-            <option value="weekly">Kilka razy w tygodniu</option>
+            <option value="weekly">Raz w tygodniu</option>
             <option value="every_x_days">Co X dni</option>
           </select>
         </label>
-        {frequency === "weekly" && (
-          <label className={styles.label}>
-            Ile razy w tygodniu?
-            <input
-              type="number"
-              className={styles.input}
-              min={1}
-              max={7}
-              value={timesPerWeek}
-              onChange={(e) => setTimesPerWeek(Number(e.target.value))}
-            />
-          </label>
-        )}
         {frequency === "every_x_days" && (
           <label className={styles.label}>
             Co ile dni?

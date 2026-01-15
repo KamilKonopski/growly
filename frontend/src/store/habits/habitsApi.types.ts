@@ -4,22 +4,19 @@ export interface Habit {
   userId: string;
   name: string;
   frequency: "daily" | "weekly" | "every_x_days";
-  timesPerWeek?: number;
-  intervalDays: number;
+  intervalDays?: number;
   createdAt: string;
 }
 
 export interface CreateHabitRequest {
   name: string;
   frequency: "daily" | "weekly" | "every_x_days";
-  timesPerWeek?: number;
-  intervalDays: number;
+  intervalDays?: number;
 }
 
 export interface UpdateHabitRequest {
   name?: string;
   frequency?: "daily" | "weekly" | "every_x_days";
-  timesPerWeek?: number;
   intervalDays?: number;
 }
 
@@ -33,18 +30,15 @@ export interface HabitLog {
   habitId: string;
   userId: string;
   date: string;
-  completed: boolean;
 }
 
 export interface CreateHabitLogRequest {
   habitId: string;
   date: string;
-  completed: boolean;
 }
 
 export interface UpdateHabitLogRequest {
   date?: string;
-  completed?: boolean;
 }
 
 export interface HabitLogStats {

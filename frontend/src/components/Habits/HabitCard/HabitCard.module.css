@@ -28,11 +28,11 @@
   color: var(--color-text-secondary);
 }
 
-.progress {
-  color: var(--color-success);
+.has-history {
+  color: var(--color-secondary);
 }
 
-.not-progress {
+.no-history {
   color: var(--color-error);
 }
 
