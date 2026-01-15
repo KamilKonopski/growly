@@ -58,15 +58,6 @@
   font-size: 0.75rem;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 48px;
-  border: 1px dashed var(--color-border);
-  border-radius: 14px;
-  color: var(--color-text-secondary);
-  margin-top: 35px;
-}
-
 @media (max-width: 1024px) {
   .habit-stats-card {
     width: 100%;

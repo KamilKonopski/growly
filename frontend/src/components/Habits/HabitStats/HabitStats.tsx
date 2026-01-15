@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import RangeSwitch from "./RangeSwitch/RangeSwitch";
 const HabitBarChart = lazy(() => import("./Charts/HabitBarChart"));
 const HabitLineChart = lazy(() => import("./Charts/HabitLineChart"));
+import EmptyState from "../../../common/components/EmptyState/EmptyState";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 import { componentMountVariants, ranges } from "../config";
@@ -50,15 +51,10 @@ const HabitStats = () => {
 
   if (!finalLogs.length) {
     return (
-      <motion.div
-        className={styles["empty-state"]}
-        variants={componentMountVariants}
-        initial="hidden"
-        animate="visible"
-      >
+      <EmptyState animationVariant={componentMountVariants}>
         <h3>Brak danych</h3>
         <p>Nie ma żadnych wykonań z ostatnich {lastDays} dni</p>
-      </motion.div>
+      </EmptyState>
     );
   }
 
