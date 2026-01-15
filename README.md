@@ -1,5 +1,7 @@
 # Growly 
 
+  **Live Demo:** Coming soon
+
 > A web application for habit tracking, learning, and personal development, featuring data visualization and flashcards.
 >
 > The Growly project was created as a student project as part of computer science studies.
@@ -15,6 +17,25 @@
 - Tracking progress through charts and statistics.
 
 The application combines productivity, personal development, and learning into one interactive tool.
+
+---
+
+## Application Modes
+
+Growly supports two application modes:
+
+### DEMO Mode
+- No backend required
+- Data stored locally in Redux store
+- Perfect for UI testing and quick previews
+- Enabled by default
+- Refreshing resets the app
+
+### Local Backend Mode
+- Express.js server
+- JSON files used as a local database
+- Full CRUD operations
+- Allows realistic data persistence without cloud services
 
 ---
 
@@ -65,16 +86,16 @@ The application combines productivity, personal development, and learning into o
 
 ## Installation & Running the App
 
+### Frontend
 ```bash
-# Clone the repository
-git clone https://github.com/KamilKonopski/growly.git <folder_name>
-cd <folder_name>
-
-# Install dependencies
+git clone https://github.com/KamilKonopski/growly.git
+cd growly/frontend
 npm install
-
-# Run the app in development mode
 npm run dev
-
-# Local backend (Express JSON server)
+```
+### Local Backend (optional)
+```bash
+cd growly/backend
+npm install
 npm run dev
+```
