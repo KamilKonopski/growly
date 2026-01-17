@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import { authApi } from "./auth/authApi";
-import appReducer from "./slices/appSlice";
 import { habitsApi } from "./habits/habitsApi";
+import { learningApi } from "./learning/learningApi";
+
+import appReducer from "./slices/appSlice";
 import habitsReducer from "./slices/habitsSlice";
+import learningReducer from "./slices/learningSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,11 +14,14 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [habitsApi.reducerPath]: habitsApi.reducer,
     habits: habitsReducer,
+    [learningApi.reducerPath]: learningApi.reducer,
+    learning: learningReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authApi.middleware)
-      .concat(habitsApi.middleware),
+      .concat(habitsApi.middleware)
+      .concat(learningApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
