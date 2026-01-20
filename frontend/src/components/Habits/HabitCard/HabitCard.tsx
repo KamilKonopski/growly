@@ -25,7 +25,7 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
   const completed = status?.isCompleted ?? false;
 
   const todayLog = logs.find(
-    (log) => log.habitId === habit.id && log.date === todayStr
+    (log) => log.habitId === habit.id && log.date === todayStr,
   );
 
   const handleCheckIn = async () => {
@@ -50,8 +50,8 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
     habit.frequency === "daily"
       ? "Codziennie"
       : habit.frequency === "weekly"
-      ? "Co tydzień"
-      : `Co ${habit.intervalDays} dni`;
+        ? "Co tydzień"
+        : `Co ${habit.intervalDays} dni`;
 
   const completedLogs = logs.filter((log) => log.habitId === habit.id).length;
 

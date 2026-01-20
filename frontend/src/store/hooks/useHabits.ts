@@ -97,7 +97,7 @@ export const useHabits = () => {
 
     const habitLog: HabitLog = {
       ...data,
-      id: new Date().toDateString(),
+      id: Date.now().toString(),
       userId: "demo-user",
     };
     dispatch(addHabitLog(habitLog));
