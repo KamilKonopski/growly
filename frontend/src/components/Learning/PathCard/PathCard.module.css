@@ -19,8 +19,15 @@
   color: var(--color-text);
 }
 
+.progress-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
 .bar {
-  width: 100%;
+  width: 85%;
   height: 12px;
   background-color: var(--color-card);
   border: 1px solid var(--color-border);
@@ -37,4 +44,8 @@
   );
   border-radius: 999px;
   transition: width 0.4s ease;
+}
+
+.progress-value {
+  font-size: 13px;
 }
