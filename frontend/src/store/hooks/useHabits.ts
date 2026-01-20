@@ -56,7 +56,14 @@ export const useHabits = () => {
   });
   const habitLogsQuery = useGetHabitLogsQuery(
     { habitId: undefined, lastDays: undefined },
-    { skip: mode !== "backend" }
+    { skip: mode !== "backend" },
+  );
+
+  const statusQuery = useGetHabitsStatusQuery(
+    {},
+    {
+      skip: mode !== "backend",
+    },
   );
 
   // ---------- HABITS ----------
@@ -84,7 +91,7 @@ export const useHabits = () => {
   };
   // ---------- HABIT LOGS ----------
   const createHabitLog = async (
-    data: CreateHabitLogRequest
+    data: CreateHabitLogRequest,
   ): Promise<HabitLog> => {
     if (mode === "backend") return await createHabitLogBackend(data).unwrap();
 
@@ -110,12 +117,6 @@ export const useHabits = () => {
   const summary = useGetHabitsSummaryQuery(undefined, {
     skip: mode !== "backend",
   });
-  const statusQuery = useGetHabitsStatusQuery(
-    {},
-    {
-      skip: mode !== "backend",
-    }
-  );
 
   const isLoading =
     mode === "backend" && (habitsQuery.isLoading || habitLogsQuery.isLoading);
@@ -125,12 +126,12 @@ export const useHabits = () => {
     isLoading,
 
     // Habits
-    habits: mode === "backend" ? habitsQuery.data ?? [] : local.habits,
+    habits: mode === "backend" ? (habitsQuery.data ?? []) : local.habits,
     createHabit,
     updateHabit,
     deleteHabit,
     // Habit Logs
-    logs: mode === "backend" ? habitLogsQuery.data ?? [] : local.habitLogs,
+    logs: mode === "backend" ? (habitLogsQuery.data ?? []) : local.habitLogs,
     createHabitLog,
     updateHabitLog,
     deleteHabitLog,
@@ -141,6 +142,7 @@ export const useHabits = () => {
     getHabitLogsStats: useGetHabitLogStatsQuery,
 
     summary,
-    habitStatus: statusQuery.data ?? [],
+    habitStatus:
+      mode === "backend" ? (statusQuery.data ?? []) : local.habitStatus,
   };
 };
