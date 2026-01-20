@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 import type { CreateHabitRequest } from "../../../store/habits/habitsApi.types";
-
 import type { Habit } from "../../../common/types/habit";
 
 import styles from "./HabitCreationModal.module.css";
@@ -12,6 +11,8 @@ interface HabitCreactionModalProps {
   onCloseAttempt: () => void;
   onDirtyChange: (dirty: boolean) => void;
   habit?: Habit | null;
+  isOpen: boolean;
+  shouldResetForm: boolean;
 }
 
 const HabitCreationModal = ({
@@ -19,17 +20,21 @@ const HabitCreationModal = ({
   onCloseAttempt,
   onDirtyChange,
   habit,
+  isOpen,
+  shouldResetForm,
 }: HabitCreactionModalProps) => {
   const { createHabit, updateHabit } = useHabits();
 
-  const [name, setName] = useState(habit?.name ?? "");
+  const [name, setName] = useState("");
   const [frequency, setFrequency] = useState<
     "daily" | "weekly" | "every_x_days"
-  >(habit?.frequency ?? "daily");
-  const [intervalDays, setIntervalDays] = useState(habit?.intervalDays ?? 2);
+  >("daily");
+  const [intervalDays, setIntervalDays] = useState(2);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!isOpen || !shouldResetForm) return;
+
     if (habit) {
       setName(habit.name);
       setFrequency(habit.frequency);
@@ -39,7 +44,9 @@ const HabitCreationModal = ({
       setFrequency("daily");
       setIntervalDays(2);
     }
-  }, [habit]);
+
+    onDirtyChange(false);
+  }, [isOpen, shouldResetForm, habit, onDirtyChange]);
 
   const initialValues = useMemo(
     () => ({
@@ -47,7 +54,7 @@ const HabitCreationModal = ({
       frequency: habit?.frequency ?? "daily",
       intervalDays: habit?.intervalDays ?? 2,
     }),
-    [habit]
+    [habit],
   );
 
   const isDirty =
@@ -89,6 +96,7 @@ const HabitCreationModal = ({
       <h2 className={styles.title}>
         {habit ? "Edytuj nawyk" : "Dodaj nowy nawyk"}
       </h2>
+
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
           Nazwa nawyku
@@ -100,6 +108,7 @@ const HabitCreationModal = ({
             required
           />
         </label>
+
         <label className={styles.label}>
           Częstotliwość
           <select
@@ -107,7 +116,7 @@ const HabitCreationModal = ({
             value={frequency}
             onChange={(e) =>
               setFrequency(
-                e.target.value as "daily" | "weekly" | "every_x_days"
+                e.target.value as "daily" | "weekly" | "every_x_days",
               )
             }
           >
@@ -116,18 +125,20 @@ const HabitCreationModal = ({
             <option value="every_x_days">Co X dni</option>
           </select>
         </label>
+
         {frequency === "every_x_days" && (
           <label className={styles.label}>
             Co ile dni?
             <input
               type="number"
               className={styles.input}
-              min={1}
+              min={2}
               value={intervalDays}
               onChange={(e) => setIntervalDays(Number(e.target.value))}
             />
           </label>
         )}
+
         <div className={styles.actions}>
           <button
             type="button"
