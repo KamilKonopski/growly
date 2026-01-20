@@ -14,6 +14,8 @@ interface PathCreationModalProps {
   onCloseAttempt: () => void;
   onDirtyChange: (dirty: boolean) => void;
   path?: LearningPath | null;
+  isOpen: boolean;
+  shouldResetForm: boolean;
 }
 
 const PathCreationModal = ({
@@ -21,6 +23,8 @@ const PathCreationModal = ({
   onCloseAttempt,
   onDirtyChange,
   path,
+  isOpen,
+  shouldResetForm,
 }: PathCreationModalProps) => {
   const { createLearningPath, updateLearningPath } = useLearning();
 
@@ -29,6 +33,8 @@ const PathCreationModal = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!isOpen || !shouldResetForm) return;
+
     if (path) {
       setName(path.name);
       setDescription(path.description ?? "");
@@ -36,14 +42,16 @@ const PathCreationModal = ({
       setName("");
       setDescription("");
     }
-  }, [path]);
+
+    onDirtyChange(false);
+  }, [isOpen, shouldResetForm, path, onDirtyChange]);
 
   const initialValues = useMemo(
     () => ({
       name: path?.name ?? "",
       description: path?.description ?? "",
     }),
-    [path]
+    [path],
   );
 
   const isDirty =
