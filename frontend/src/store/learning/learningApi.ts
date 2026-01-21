@@ -1,7 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
+  CreateFlashcardRequest,
   CreateLearningPathRequest,
+  Flashcard,
   LearningPath,
+  UpdateFlashcardRequest,
   UpdateLearningPathRequest,
 } from "./learningApi.types";
 
@@ -15,7 +18,7 @@ export const learningApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["LearningPath"],
+  tagTypes: ["LearningPath", "Flashcards"],
   endpoints: (builder) => ({
     // ------------------- LEARNING PATHS -------------------
     getLearningPaths: builder.query<LearningPath[], void>({
@@ -55,6 +58,40 @@ export const learningApi = createApi({
       }),
       invalidatesTags: ["LearningPath"],
     }),
+    // ------------------- LEARNING FLASHCARDS -------------------
+    getFlashcards: builder.query<Flashcard[], string>({
+      query: (pathId) => `/learning/paths/${pathId}/flashcards`,
+      providesTags: (_r, _e, id) => [{ type: "Flashcards", id }],
+    }),
+    createFlashcard: builder.mutation<
+      Flashcard,
+      { pathId: string; data: CreateFlashcardRequest }
+    >({
+      query: ({ pathId, data }) => ({
+        url: `/learning/paths/${pathId}/flashcards`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Flashcards"],
+    }),
+    updateFlashcard: builder.mutation<
+      Flashcard,
+      { id: string; data: UpdateFlashcardRequest }
+    >({
+      query: ({ id, data }) => ({
+        url: `/learning/flashcards/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Flashcards"],
+    }),
+    deleteFlashcard: builder.mutation<boolean, string>({
+      query: (id) => ({
+        url: `/learning/flashcards/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Flashcards"],
+    }),
   }),
 });
 
@@ -64,4 +101,9 @@ export const {
   useCreateLearningPathMutation,
   useUpdateLearningPathMutation,
   useDeleteLearningPathMutation,
+
+  useGetFlashcardsQuery,
+  useCreateFlashcardMutation,
+  useUpdateFlashcardMutation,
+  useDeleteFlashcardMutation,
 } = learningApi;

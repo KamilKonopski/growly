@@ -1,10 +1,10 @@
 import EmptyState from "../../../common/components/EmptyState/EmptyState";
 import { Spinner } from "../../../common/components/Spinner/Spinner";
+import PathCard from "../PathCard/PathCard";
 
 import { useLearning } from "../../../store/hooks/useLearning";
 
 import { componentMountVariants } from "../config";
-import PathCard from "../PathCard/PathCard";
 
 import styles from "./PathList.module.css";
 

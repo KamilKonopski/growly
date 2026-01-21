@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
@@ -16,18 +16,26 @@ const Learning = () => {
   const [shouldReopen, setShouldReopen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [editingPath, setEditingPath] = useState<LearningPath | null>(null);
+  const [shouldResetForm, setShouldResetForm] = useState(false);
 
   const handleOpenModal = () => {
     setEditingPath(null);
+    setShouldResetForm(true);
     setOpenModal(true);
   };
 
   // const handleEditPath = (path: LearningPath) => {
   //   setEditingPath(path);
+  //   setShouldResetForm(true);
   //   setOpenModal(true);
   // };
 
-  const handleForceCloseModal = () => setOpenModal(false);
+  const handleForceCloseModal = () => {
+    setIsDirty(false);
+    setEditingPath(null);
+    setShouldResetForm(true);
+    setOpenModal(false);
+  };
 
   const handleCloseAttempt = () => {
     if (isDirty) {
@@ -49,9 +57,18 @@ const Learning = () => {
   };
 
   const handleConfirmLeave = () => {
+    setIsDirty(false);
+    setEditingPath(null);
+    setShouldResetForm(true);
     setShowConfirm(false);
     setShouldReopen(false);
   };
+
+  useEffect(() => {
+    if (openModal) {
+      setShouldResetForm(false);
+    }
+  }, [openModal]);
 
   return (
     <>
@@ -66,6 +83,8 @@ const Learning = () => {
       </section>
       <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
         <PathCreationModal
+          isOpen={openModal}
+          shouldResetForm={shouldResetForm}
           onClose={handleForceCloseModal}
           onCloseAttempt={handleCloseAttempt}
           onDirtyChange={setIsDirty}

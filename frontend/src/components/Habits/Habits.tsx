@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
@@ -18,18 +18,26 @@ const Habits = () => {
   const [shouldReopen, setShouldReopen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+  const [shouldResetForm, setShouldResetForm] = useState(false);
 
   const handleOpenModal = () => {
     setEditingHabit(null);
+    setShouldResetForm(true);
     setOpenModal(true);
   };
 
   const handleEditHabit = (habit: Habit) => {
     setEditingHabit(habit);
+    setShouldResetForm(true);
     setOpenModal(true);
   };
 
-  const handleForceCloseModal = () => setOpenModal(false);
+  const handleForceCloseModal = () => {
+    setIsDirty(false);
+    setEditingHabit(null);
+    setShouldResetForm(true);
+    setOpenModal(false);
+  };
 
   const handleCloseAttempt = () => {
     if (isDirty) {
@@ -51,31 +59,45 @@ const Habits = () => {
   };
 
   const handleConfirmLeave = () => {
+    setIsDirty(false);
+    setEditingHabit(null);
+    setShouldResetForm(true);
     setShowConfirm(false);
     setShouldReopen(false);
   };
 
+  useEffect(() => {
+    if (openModal) {
+      setShouldResetForm(false);
+    }
+  }, [openModal]);
+
   return (
     <>
       <section className={styles.container}>
-        <div className={styles["button_container"]}>
+        <div className={styles.button_container}>
           <button className={styles.button} onClick={handleOpenModal}>
             <Plus />
             Dodaj nawyk
           </button>
         </div>
+
         <HabitList onEdit={handleEditHabit} />
         <HabitCalendar />
         <HabitStats />
       </section>
+
       <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
         <HabitCreationModal
+          isOpen={openModal}
+          shouldResetForm={shouldResetForm}
           onClose={handleForceCloseModal}
           onCloseAttempt={handleCloseAttempt}
           onDirtyChange={setIsDirty}
           habit={editingHabit}
         />
       </Modal>
+
       <Modal isOpen={showConfirm} onClose={handleConfirmStay}>
         <ConfirmLeavingModal
           onCancel={handleConfirmStay}

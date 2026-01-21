@@ -3,7 +3,7 @@ import path from "path";
 
 import { User } from "../types/User";
 import { Habit, HabitLog } from "../types/Habit";
-import { LearningPath } from "../types/Learning";
+import { Flashcard, LearningPath } from "../types/Learning";
 
 // Function to read any JSON file
 const readData = <T>(fileName: string): T[] => {
@@ -41,8 +41,14 @@ export const readHabitLogs = () => readData<HabitLog>("habitLogs.json");
 export const writeHabitLogs = (habitLogs: HabitLog[]) =>
   writeData<HabitLog>("habitLogs.json", habitLogs);
 
-// LEARNINGPATHS TABLE
+// LEARNING PATHS TABLE
 export const readLearningPaths = () =>
   readData<LearningPath>("learningPaths.json");
 export const writeLearningPaths = (learningPaths: LearningPath[]) =>
   writeData<LearningPath>("learningPaths.json", learningPaths);
+
+// LEARNING FLASHCARDS TABLE
+export const readLearningFlashcards = () =>
+  readData<Flashcard>("learningFlashcards.json");
+export const writeLearningFlashcards = (flashcards: Flashcard[]) =>
+  writeData<Flashcard>("learningFlashcards.json", flashcards);

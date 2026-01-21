@@ -24,6 +24,11 @@ export interface HabitsSummaryResponse {
   total: number;
 }
 
+export interface HabitStatus {
+  habitId: string;
+  isCompleted: boolean;
+}
+
 // HABIT LOGS
 export interface HabitLog {
   id: string;

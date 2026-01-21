@@ -15,7 +15,7 @@
   border-radius: 12px;
   padding: 24px;
   width: 100%;
-  max-width: 500px;
+  max-width: var(--modal-max-width, 500px);
   overflow-y: auto;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
   font-family: var(--font-main);

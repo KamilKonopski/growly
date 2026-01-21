@@ -10,6 +10,7 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   closeOnBackdropClick?: boolean;
+  maxWidth?: number | string;
 }
 
 const Modal = ({
@@ -18,6 +19,7 @@ const Modal = ({
   onClose,
   children,
   closeOnBackdropClick = true,
+  maxWidth,
 }: ModalProps) => {
   useEffect(() => {
     if (!isOpen) return;
@@ -50,6 +52,12 @@ const Modal = ({
             exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.25 }}
             className={styles.modal}
+            style={
+              {
+                "--modal-max-width":
+                  typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth,
+              } as React.CSSProperties
+            }
             onClick={(e) => e.stopPropagation()}
           >
             {children}
@@ -57,7 +65,7 @@ const Modal = ({
         </motion.div>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };
 
