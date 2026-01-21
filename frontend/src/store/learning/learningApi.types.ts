@@ -16,3 +16,26 @@ export interface UpdateLearningPathRequest {
   name?: string;
   description?: string;
 }
+
+// LEARNING FLASHCARDS
+export interface Flashcard {
+  id: string;
+  userId: string;
+  pathId: string;
+  front: string;
+  back: string;
+  tag?: string;
+  createdAt: string;
+}
+
+export interface CreateFlashcardRequest {
+  front: string;
+  back: string;
+  tag?: string;
+}
+
+export interface UpdateFlashcardRequest {
+  front?: string;
+  back?: string;
+  tag?: string;
+}
