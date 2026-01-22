@@ -15,3 +15,11 @@ export const getStartOfWeek = (dateStr: string): string => {
 
   return date.toISOString().slice(0, 10);
 };
+
+export const getDaySeed = (date = new Date()): number => {
+  const yyyy = date.getUTCFullYear();
+  const mm = date.getUTCMonth() + 1;
+  const dd = date.getUTCDate();
+
+  return yyyy * 10000 + mm * 100 + dd;
+};
