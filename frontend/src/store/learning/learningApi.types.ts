@@ -25,6 +25,7 @@ export interface Flashcard {
   front: string;
   back: string;
   tag?: string;
+  known?: boolean;
   createdAt: string;
 }
 
@@ -32,10 +33,12 @@ export interface CreateFlashcardRequest {
   front: string;
   back: string;
   tag?: string;
+  known?: boolean;
 }
 
 export interface UpdateFlashcardRequest {
   front?: string;
   back?: string;
   tag?: string;
+  known?: boolean;
 }
