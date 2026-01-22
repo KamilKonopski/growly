@@ -29,6 +29,6 @@ export const useDashboard = () => {
     isLoading,
 
     // Quote
-    quote: mode === "backend" ? (quoteQuery.data ?? {}) : localQuote,
+    quote: mode === "backend" ? (quoteQuery.data ?? null) : localQuote,
   };
 };
