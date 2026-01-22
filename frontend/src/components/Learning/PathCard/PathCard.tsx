@@ -11,6 +11,7 @@ import { componentMountVariants } from "../config";
 
 import styles from "./PathCard.module.css";
 import EmptyState from "../../../common/components/EmptyState/EmptyState";
+import StudyModal from "../StudyModal/StudyModal";
 
 interface PathCardProps {
   path: LearningPath;
@@ -19,6 +20,11 @@ interface PathCardProps {
 const PathCard = ({ path }: PathCardProps) => {
   const { flashcards } = useLearning(path.id);
   const [showFlashcards, setShowFlashcards] = useState(false);
+  const [studyOpen, setStudyOpen] = useState(false);
+  const known = flashcards.filter((f) => f.known).length;
+  const value = flashcards.length
+    ? Math.round((known / flashcards.length) * 100)
+    : 0;
 
   const handleOpenFlashcards = () => {
     setShowFlashcards(true);
@@ -28,7 +34,14 @@ const PathCard = ({ path }: PathCardProps) => {
     setShowFlashcards(false);
   };
 
-  const value = 60;
+  const handleOpenStudyMode = () => {
+    setStudyOpen(true);
+  };
+
+  const handleCloseStudyMode = () => {
+    setStudyOpen(false);
+  };
+
   return (
     <>
       <motion.article
@@ -60,7 +73,7 @@ const PathCard = ({ path }: PathCardProps) => {
 
         <div>
           <button onClick={handleOpenFlashcards}>Otwórz</button>
-          <button>Nauka</button>
+          <button onClick={handleOpenStudyMode}>Nauka</button>
         </div>
 
         <button>Dodaj fiszkę</button>
@@ -78,6 +91,10 @@ const PathCard = ({ path }: PathCardProps) => {
             <p>Nie masz żadnych fiszek. Dodaj pierwszą fiszkę.</p>
           </EmptyState>
         )}
+      </Modal>
+
+      <Modal isOpen={studyOpen} onClose={handleCloseStudyMode} maxWidth={700}>
+        <StudyModal pathId={path.id} onClose={handleCloseStudyMode} />
       </Modal>
     </>
   );
