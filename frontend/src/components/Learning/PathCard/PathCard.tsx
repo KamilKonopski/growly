@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+import ConfirmLeavingModal from "../../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
+import EmptyState from "../../../common/components/EmptyState/EmptyState";
 import Flashcards from "../Flashcards/Flashcards";
+import FlashcardCreationModal from "../FlashcardCreation/FlashcardCreationModal";
 import Modal from "../../../common/components/Modal/Modal";
+import StudyModal from "../StudyModal/StudyModal";
 
 import { useLearning } from "../../../store/hooks/useLearning";
 
-import type { LearningPath } from "../../../common/types/learning";
+import type { Flashcard, LearningPath } from "../../../common/types/learning";
 import { componentMountVariants } from "../config";
 
 import styles from "./PathCard.module.css";
-import EmptyState from "../../../common/components/EmptyState/EmptyState";
-import StudyModal from "../StudyModal/StudyModal";
 
 interface PathCardProps {
   path: LearningPath;
@@ -21,6 +23,15 @@ const PathCard = ({ path }: PathCardProps) => {
   const { flashcards } = useLearning(path.id);
   const [showFlashcards, setShowFlashcards] = useState(false);
   const [studyOpen, setStudyOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [shouldReopen, setShouldReopen] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const [editingFlashcard, setEditingFlashcard] = useState<Flashcard | null>(
+    null,
+  );
+  const [shouldResetForm, setShouldResetForm] = useState(false);
+
   const known = flashcards.filter((f) => f.known).length;
   const value = flashcards.length
     ? Math.round((known / flashcards.length) * 100)
@@ -41,6 +52,58 @@ const PathCard = ({ path }: PathCardProps) => {
   const handleCloseStudyMode = () => {
     setStudyOpen(false);
   };
+
+  const handleOpenAddFlashcard = () => {
+    setEditingFlashcard(null);
+    setShouldResetForm(true);
+    setOpenModal(true);
+  };
+
+  // const handleEditFlashcard = (flashcard: Flashcard) => {
+  //   setEditingFlashcard(flashcard);
+  //   setShouldResetForm(true);
+  //   setOpenModal(true);
+  // };
+
+  const handleForceCloseModal = () => {
+    setIsDirty(false);
+    setEditingFlashcard(null);
+    setShouldResetForm(true);
+    setOpenModal(false);
+  };
+
+  const handleCloseAttempt = () => {
+    if (isDirty) {
+      setOpenModal(false);
+      setShowConfirm(true);
+      setShouldReopen(true);
+    } else {
+      setOpenModal(false);
+    }
+  };
+
+  const handleConfirmStay = () => {
+    setShowConfirm(false);
+
+    if (shouldReopen) {
+      setOpenModal(true);
+      setShouldReopen(false);
+    }
+  };
+
+  const handleConfirmLeave = () => {
+    setIsDirty(false);
+    setEditingFlashcard(null);
+    setShouldResetForm(true);
+    setShowConfirm(false);
+    setShouldReopen(false);
+  };
+
+  useEffect(() => {
+    if (openModal) {
+      setShouldResetForm(false);
+    }
+  }, [openModal]);
 
   return (
     <>
@@ -76,7 +139,7 @@ const PathCard = ({ path }: PathCardProps) => {
           <button onClick={handleOpenStudyMode}>Nauka</button>
         </div>
 
-        <button>Dodaj fiszkę</button>
+        <button onClick={handleOpenAddFlashcard}>Dodaj fiszkę</button>
       </motion.article>
 
       <Modal
@@ -95,6 +158,24 @@ const PathCard = ({ path }: PathCardProps) => {
 
       <Modal isOpen={studyOpen} onClose={handleCloseStudyMode} maxWidth={700}>
         <StudyModal pathId={path.id} onClose={handleCloseStudyMode} />
+      </Modal>
+
+      <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
+        <FlashcardCreationModal
+          isOpen={openModal}
+          shouldResetForm={shouldResetForm}
+          onClose={handleForceCloseModal}
+          onCloseAttempt={handleCloseAttempt}
+          onDirtyChange={setIsDirty}
+          flashcard={editingFlashcard}
+          pathId={path.id}
+        />
+      </Modal>
+      <Modal isOpen={showConfirm} onClose={handleConfirmStay}>
+        <ConfirmLeavingModal
+          onCancel={handleConfirmStay}
+          onConfirm={handleConfirmLeave}
+        />
       </Modal>
     </>
   );

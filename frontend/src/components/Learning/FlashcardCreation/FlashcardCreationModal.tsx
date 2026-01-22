@@ -2,60 +2,63 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useLearning } from "../../../store/hooks/useLearning";
 import type {
-  CreateLearningPathRequest,
-  UpdateLearningPathRequest,
-  LearningPath,
+  CreateFlashcardRequest,
+  UpdateFlashcardRequest,
 } from "../../../store/learning/learningApi.types";
 
-import styles from "./PathCreationModal.module.css";
+import type { Flashcard } from "../../../common/types/learning";
 
-interface PathCreationModalProps {
+import styles from "./FlashcardCreationModal.module.css";
+
+interface FlashcardCreationModalProps {
   onClose: () => void;
   onCloseAttempt: () => void;
   onDirtyChange: (dirty: boolean) => void;
-  path?: LearningPath | null;
+  flashcard?: Flashcard | null;
   isOpen: boolean;
   shouldResetForm: boolean;
+  pathId: string;
 }
 
-const PathCreationModal = ({
+const FlashcardCreationModal = ({
   onClose,
   onCloseAttempt,
   onDirtyChange,
-  path,
+  flashcard,
   isOpen,
   shouldResetForm,
-}: PathCreationModalProps) => {
-  const { createLearningPath, updateLearningPath } = useLearning();
+  pathId,
+}: FlashcardCreationModalProps) => {
+  const { createLearningFlashcard, updateLearningFlashcard } = useLearning();
 
-  const [name, setName] = useState(path?.name ?? "");
-  const [description, setDescription] = useState(path?.description ?? "");
+  const [question, setQuestion] = useState(flashcard?.front ?? "");
+  const [answer, setAnswer] = useState(flashcard?.back ?? "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isOpen || !shouldResetForm) return;
 
-    if (path) {
-      setName(path.name);
-      setDescription(path.description ?? "");
+    if (flashcard) {
+      setQuestion(flashcard.front);
+      setAnswer(flashcard.back ?? "");
     } else {
-      setName("");
-      setDescription("");
+      setQuestion("");
+      setAnswer("");
     }
 
     onDirtyChange(false);
-  }, [isOpen, shouldResetForm, path, onDirtyChange]);
+  }, [isOpen, shouldResetForm, flashcard, onDirtyChange]);
 
   const initialValues = useMemo(
     () => ({
-      name: path?.name ?? "",
-      description: path?.description ?? "",
+      question: flashcard?.front ?? "",
+      answer: flashcard?.back ?? "",
     }),
-    [path],
+    [flashcard],
   );
 
   const isDirty =
-    name !== initialValues.name || description !== initialValues.description;
+    question !== initialValues.question || answer !== initialValues.answer;
 
   useEffect(() => {
     onDirtyChange(isDirty);
@@ -70,18 +73,18 @@ const PathCreationModal = ({
     e.preventDefault();
     setLoading(true);
 
-    if (path) {
-      const payload: UpdateLearningPathRequest = {
-        name,
-        description: description || undefined,
+    if (flashcard) {
+      const payload: UpdateFlashcardRequest = {
+        front: question,
+        back: answer,
       };
-      await updateLearningPath(path.id, payload);
+      await updateLearningFlashcard(flashcard.id, payload);
     } else {
-      const payload: CreateLearningPathRequest = {
-        name,
-        description: description || undefined,
+      const payload: CreateFlashcardRequest = {
+        front: question,
+        back: answer,
       };
-      await createLearningPath(payload);
+      await createLearningFlashcard(pathId, payload);
     }
 
     setLoading(false);
@@ -91,29 +94,30 @@ const PathCreationModal = ({
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>
-        {path ? "Edytuj ścieżkę nauki" : "Dodaj nową ścieżkę"}
+        {flashcard ? "Edytuj fiszkę" : "Dodaj nową fiszkę"}
       </h2>
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
-          Nazwa ścieżki *
+          Pytanie *
           <input
             className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Np. Frontend Developer"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="Jakie jest pytanie?"
             required
           />
         </label>
 
         <label className={styles.label}>
-          Opis (opcjonalnie)
+          Odpowiedź *
           <textarea
             className={styles.textarea}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Czego dotyczy ta ścieżka?"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            placeholder="Jaka jest odpowiedź?"
             rows={4}
+            required
           />
         </label>
 
@@ -126,7 +130,7 @@ const PathCreationModal = ({
             Anuluj
           </button>
           <button type="submit" className={styles.submit} disabled={loading}>
-            {loading ? "Zapisywanie..." : path ? "Zapisz zmiany" : "Dodaj"}
+            {loading ? "Zapisywanie..." : flashcard ? "Zapisz zmiany" : "Dodaj"}
           </button>
         </div>
       </form>
@@ -134,4 +138,4 @@ const PathCreationModal = ({
   );
 };
 
-export default PathCreationModal;
+export default FlashcardCreationModal;

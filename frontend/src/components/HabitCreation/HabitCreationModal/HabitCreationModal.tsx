@@ -99,7 +99,7 @@ const HabitCreationModal = ({
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
-          Nazwa nawyku
+          Nazwa nawyku *
           <input
             className={styles.input}
             value={name}
