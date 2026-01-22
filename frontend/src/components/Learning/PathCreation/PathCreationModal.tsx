@@ -96,7 +96,7 @@ const PathCreationModal = ({
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
-          Nazwa ścieżki
+          Nazwa ścieżki *
           <input
             className={styles.input}
             value={name}
