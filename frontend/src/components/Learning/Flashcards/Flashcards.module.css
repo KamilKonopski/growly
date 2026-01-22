@@ -1,12 +1,10 @@
 .scene {
   width: 100%;
   min-height: 360px;
-
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
 }
 
@@ -14,24 +12,18 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
   width: 44px;
   height: 44px;
   border-radius: 50%;
-
   background: rgba(129, 161, 255, 0.12);
   backdrop-filter: blur(4px);
-
   border: 1px solid var(--color-border);
   color: var(--color-primary);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   z-index: 10;
-
   transition:
     background 0.2s ease,
     transform 0.2s ease;
