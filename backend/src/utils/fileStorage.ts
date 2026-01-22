@@ -3,6 +3,7 @@ import path from "path";
 
 import { User } from "../types/User";
 import { Habit, HabitLog } from "../types/Habit";
+import { Flashcard, LearningPath } from "../types/Learning";
 
 // Function to read any JSON file
 const readData = <T>(fileName: string): T[] => {
@@ -25,17 +26,29 @@ const writeData = <T>(fileName: string, data: T[]): void => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
 };
 
-// USERS TABEL
+// USERS TABLE
 export const readUsers = () => readData<User>("users.json");
 export const writeUsers = (users: User[]) =>
   writeData<User>("users.json", users);
 
-// HABITS TABEL
+// HABITS TABLE
 export const readHabits = () => readData<Habit>("habits.json");
 export const writeHabits = (habits: Habit[]) =>
   writeData<Habit>("habits.json", habits);
 
-// HABITLOGS TABEL
+// HABITLOGS TABLE
 export const readHabitLogs = () => readData<HabitLog>("habitLogs.json");
 export const writeHabitLogs = (habitLogs: HabitLog[]) =>
   writeData<HabitLog>("habitLogs.json", habitLogs);
+
+// LEARNING PATHS TABLE
+export const readLearningPaths = () =>
+  readData<LearningPath>("learningPaths.json");
+export const writeLearningPaths = (learningPaths: LearningPath[]) =>
+  writeData<LearningPath>("learningPaths.json", learningPaths);
+
+// LEARNING FLASHCARDS TABLE
+export const readLearningFlashcards = () =>
+  readData<Flashcard>("learningFlashcards.json");
+export const writeLearningFlashcards = (flashcards: Flashcard[]) =>
+  writeData<Flashcard>("learningFlashcards.json", flashcards);

@@ -1,40 +1,38 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
-import HabitCalendar from "./HabitCalendar/HabitCalendar";
-import HabitCreationModal from "../HabitCreation/HabitCreationModal/HabitCreationModal";
-import HabitList from "./HabitList/HabitList";
-import HabitStats from "./HabitStats/HabitStats";
 import Modal from "../../common/components/Modal/Modal";
+import PathList from "./PathList/PathList";
+import PathCreationModal from "./PathCreation/PathCreationModal";
 
-import type { Habit } from "../../common/types/habit";
+import type { LearningPath } from "../../common/types/learning";
 
-import styles from "./Habits.module.css";
+import styles from "./Learning.module.css";
 
-const Habits = () => {
+const Learning = () => {
   const [openModal, setOpenModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [shouldReopen, setShouldReopen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+  const [editingPath, setEditingPath] = useState<LearningPath | null>(null);
   const [shouldResetForm, setShouldResetForm] = useState(false);
 
   const handleOpenModal = () => {
-    setEditingHabit(null);
+    setEditingPath(null);
     setShouldResetForm(true);
     setOpenModal(true);
   };
 
-  const handleEditHabit = (habit: Habit) => {
-    setEditingHabit(habit);
-    setShouldResetForm(true);
-    setOpenModal(true);
-  };
+  // const handleEditPath = (path: LearningPath) => {
+  //   setEditingPath(path);
+  //   setShouldResetForm(true);
+  //   setOpenModal(true);
+  // };
 
   const handleForceCloseModal = () => {
     setIsDirty(false);
-    setEditingHabit(null);
+    setEditingPath(null);
     setShouldResetForm(true);
     setOpenModal(false);
   };
@@ -60,7 +58,7 @@ const Habits = () => {
 
   const handleConfirmLeave = () => {
     setIsDirty(false);
-    setEditingHabit(null);
+    setEditingPath(null);
     setShouldResetForm(true);
     setShowConfirm(false);
     setShouldReopen(false);
@@ -75,29 +73,24 @@ const Habits = () => {
   return (
     <>
       <section className={styles.container}>
-        <div className={styles.button_container}>
+        <div className={styles["button_container"]}>
           <button className={styles.button} onClick={handleOpenModal}>
             <Plus />
-            Dodaj nawyk
+            Dodaj ścieżkę
           </button>
         </div>
-
-        <HabitList onEdit={handleEditHabit} />
-        <HabitCalendar />
-        <HabitStats />
+        <PathList />
       </section>
-
       <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
-        <HabitCreationModal
+        <PathCreationModal
           isOpen={openModal}
           shouldResetForm={shouldResetForm}
           onClose={handleForceCloseModal}
           onCloseAttempt={handleCloseAttempt}
           onDirtyChange={setIsDirty}
-          habit={editingHabit}
+          path={editingPath}
         />
       </Modal>
-
       <Modal isOpen={showConfirm} onClose={handleConfirmStay}>
         <ConfirmLeavingModal
           onCancel={handleConfirmStay}
@@ -108,4 +101,4 @@ const Habits = () => {
   );
 };
 
-export default Habits;
+export default Learning;

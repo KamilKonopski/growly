@@ -8,6 +8,7 @@ import type {
   CreateHabitLogRequest,
   UpdateHabitLogRequest,
   HabitLogStats,
+  HabitStatus,
 } from "./habitsApi.types";
 
 export const habitsApi = createApi({
@@ -119,10 +120,7 @@ export const habitsApi = createApi({
       }),
       providesTags: ["HabitLog"],
     }),
-    getHabitsStatus: builder.query<
-      { habitId: string; isCompleted: boolean }[],
-      { date?: string }
-    >({
+    getHabitsStatus: builder.query<HabitStatus[], { date?: string }>({
       query: (params) => ({
         url: "/habits/status",
         params,
