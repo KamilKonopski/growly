@@ -4,6 +4,7 @@ import path from "path";
 import { User } from "../types/User";
 import { Habit, HabitLog } from "../types/Habit";
 import { Flashcard, LearningPath } from "../types/Learning";
+import { Quote } from "../types/Quote";
 
 // Function to read any JSON file
 const readData = <T>(fileName: string): T[] => {
@@ -52,3 +53,6 @@ export const readLearningFlashcards = () =>
   readData<Flashcard>("learningFlashcards.json");
 export const writeLearningFlashcards = (flashcards: Flashcard[]) =>
   writeData<Flashcard>("learningFlashcards.json", flashcards);
+
+// DASHBOARD QUOTES TABLE
+export const readDashboardQuotes = () => readData<Quote>("quotes.json");

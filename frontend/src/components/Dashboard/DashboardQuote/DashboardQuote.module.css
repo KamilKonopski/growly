@@ -1,0 +1,44 @@
+.container {
+  width: 100%;
+  padding: 20px 24px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.text {
+  font-family: var(--font-alt);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  font-weight: 500;
+  position: relative;
+}
+
+.text::after {
+  content: "❞";
+  position: absolute;
+  right: -18px;
+  bottom: -0.8em;
+  font-size: 2rem;
+  color: var(--color-primary);
+  opacity: 0.4;
+}
+
+.text::before {
+  content: "❝";
+  position: absolute;
+  left: -18px;
+  top: -0.3em;
+  font-size: 2rem;
+  color: var(--color-primary);
+  opacity: 0.4;
+}
+
+.author {
+  align-self: flex-end;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
