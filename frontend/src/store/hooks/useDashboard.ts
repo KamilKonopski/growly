@@ -18,7 +18,7 @@ export const useDashboard = () => {
 
   // ---------- QUOTE ----------
   const localQuote: Quote = {
-    text: "Każda zmiana zaczyna się od jednego, małego kroku.",
+    text: "'Każda zmiana zaczyna się od jednego, małego kroku.'",
     author: "Nieznany",
   };
 
