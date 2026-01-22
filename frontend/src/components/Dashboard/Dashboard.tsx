@@ -1,5 +1,11 @@
+import DashboardQuote from "./DashboardQuote/DashboardQuote";
+
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <DashboardQuote />
+    </div>
+  );
 };
 
 export default Dashboard;
