@@ -1,10 +1,12 @@
+import DashboardActivity from "./DashboardActivity/DashboardActivity";
 import DashboardQuote from "./DashboardQuote/DashboardQuote";
 
 const Dashboard = () => {
   return (
-    <div>
+    <section>
       <DashboardQuote />
-    </div>
+      <DashboardActivity />
+    </section>
   );
 };
 
