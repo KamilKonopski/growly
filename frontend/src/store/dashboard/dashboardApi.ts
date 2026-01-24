@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { Quote } from "./dashboardApi.types";
+import type { DashboardHabitResponse, Quote } from "./dashboardApi.types";
 
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
@@ -17,7 +17,12 @@ export const dashboardApi = createApi({
     getQuoteOfTheDay: builder.query<Quote, void>({
       query: () => "/dashboard/quote",
     }),
+    // ------------------- HABITS -------------------------------
+    getTodayHabits: builder.query<DashboardHabitResponse, void>({
+      query: () => "/dashboard/habits/today",
+    }),
   }),
 });
 
-export const { useGetQuoteOfTheDayQuery } = dashboardApi;
+export const { useGetQuoteOfTheDayQuery, useGetTodayHabitsQuery } =
+  dashboardApi;
