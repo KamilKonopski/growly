@@ -22,7 +22,7 @@ export const getTodayDashboardHabits = (
         {
           id: habit.id,
           name: habit.name,
-          date,
+          date: habit.createdAt,
         },
       ];
     });
