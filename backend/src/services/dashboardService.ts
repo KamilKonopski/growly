@@ -1,7 +1,13 @@
 import { getHabits } from "./habitService";
 import { getHabitsStatusForDate } from "./habitStatusService";
+import { getLearningPaths } from "./learningPathsService";
+import { getLearningFlashcards } from "./flashcardService";
 
-import { DashboardHabits, DashboardHabitsDTO } from "../types/Dashboard";
+import {
+  DashboardHabits,
+  DashboardHabitsDTO,
+  DashboardLearningPath,
+} from "../types/Dashboard";
 
 // get all uncompleted habits
 export const getTodayDashboardHabits = (
@@ -40,4 +46,31 @@ export const getHabitsToday = (
     totalHabits: allHabits.length,
     todayHabits,
   };
+};
+
+// get newest learning paths
+export const getNewestLearningPaths = (
+  userId: string,
+  limit = 5,
+): DashboardLearningPath[] => {
+  const learningPaths = getLearningPaths(userId);
+
+  //sort - recently created
+  const sortedPaths = [...learningPaths].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  return sortedPaths.slice(0, limit).map((path) => {
+    const flashcards = getLearningFlashcards(userId, path.id);
+
+    const totalFlashcards = flashcards.length;
+    const knownFlashcards = flashcards.filter((f) => f.known).length;
+
+    return {
+      id: path.id,
+      name: path.name,
+      knownFlashcards,
+      totalFlashcards,
+    };
+  });
 };
