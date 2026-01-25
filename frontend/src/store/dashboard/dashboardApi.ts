@@ -11,7 +11,7 @@ export const dashboardApi = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ["DashboardHabits"],
   endpoints: (builder) => ({
     // ------------------- QUOTE -------------------------------
     getQuoteOfTheDay: builder.query<Quote, void>({
@@ -20,6 +20,7 @@ export const dashboardApi = createApi({
     // ------------------- HABITS -------------------------------
     getTodayHabits: builder.query<DashboardHabitResponse, void>({
       query: () => "/dashboard/habits/today",
+      providesTags: ["DashboardHabits"],
     }),
   }),
 });
