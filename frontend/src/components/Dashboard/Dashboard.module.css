@@ -1,0 +1,21 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+/* Mobile: 1 kolumna, ale DashboardHabits pierwszy */
+@media (max-width: 768px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .habits {
+    order: 1;
+  }
+
+  .learning {
+    order: 2;
+  }
+}
