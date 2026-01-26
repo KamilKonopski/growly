@@ -4,7 +4,10 @@ import { getDashboardQuoteOfTheDay } from "../../services/quoteService";
 
 import { authMiddleware, AuthRequest } from "../../middleware/auth";
 import { today } from "../../utils/dateUtils";
-import { getHabitsToday } from "../../services/dashboardService";
+import {
+  getHabitsToday,
+  getNewestLearningPaths,
+} from "../../services/dashboardService";
 
 const router = Router();
 
@@ -25,6 +28,18 @@ router.get(
     const habits = getHabitsToday(userId, today());
 
     res.json(habits);
+  },
+);
+
+// GET /api/dashboard/learning/paths/newest - newest learning paths
+router.get(
+  "/learning/paths/newest",
+  authMiddleware,
+  (req: AuthRequest, res: Response) => {
+    const userId = req.user!.id;
+    const newestLearningPaths = getNewestLearningPaths(userId);
+
+    res.json(newestLearningPaths);
   },
 );
 

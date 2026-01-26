@@ -1,4 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+import { dashboardApi } from "../dashboard/dashboardApi";
+
 import type {
   Habit,
   CreateHabitRequest,
@@ -21,7 +24,7 @@ export const habitsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Habit", "HabitLog"],
+  tagTypes: ["Habit", "HabitLog", "HabitStatus"],
   endpoints: (builder) => ({
     // ------------------- HABITS -------------------------------
     getHabits: builder.query<Habit[], void>({
@@ -82,7 +85,16 @@ export const habitsApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["HabitLog"],
+      invalidatesTags: ["HabitLog", "HabitStatus"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu logu nawyku:", error);
+        }
+      },
     }),
     updateHabitLog: builder.mutation<
       HabitLog,
@@ -94,13 +106,31 @@ export const habitsApi = createApi({
         body: data,
       }),
       invalidatesTags: (_r, _e, arg) => [{ type: "HabitLog", id: arg.logId }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu logu nawyku:", error);
+        }
+      },
     }),
     deleteHabitLog: builder.mutation<boolean, string>({
       query: (logId) => ({
         url: `/habits/logs/${logId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["HabitLog"],
+      invalidatesTags: ["HabitLog", "HabitStatus"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu logu nawyku:", error);
+        }
+      },
     }),
     getHabitLogsByDateRange: builder.query<
       HabitLog[],
@@ -125,7 +155,7 @@ export const habitsApi = createApi({
         url: "/habits/status",
         params,
       }),
-      providesTags: ["HabitLog"],
+      providesTags: ["HabitStatus"],
     }),
   }),
 });

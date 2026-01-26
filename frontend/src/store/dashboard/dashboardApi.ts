@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { DashboardHabitResponse, Quote } from "./dashboardApi.types";
+import type {
+  DashboardHabitResponse,
+  DashboardLearningPathsResponse,
+  Quote,
+} from "./dashboardApi.types";
 
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
@@ -11,7 +15,7 @@ export const dashboardApi = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ["DashboardHabits"],
   endpoints: (builder) => ({
     // ------------------- QUOTE -------------------------------
     getQuoteOfTheDay: builder.query<Quote, void>({
@@ -20,9 +24,20 @@ export const dashboardApi = createApi({
     // ------------------- HABITS -------------------------------
     getTodayHabits: builder.query<DashboardHabitResponse, void>({
       query: () => "/dashboard/habits/today",
+      providesTags: ["DashboardHabits"],
+    }),
+    // ------------------ Learning ------------------------------
+    getNewestLearningPaths: builder.query<
+      DashboardLearningPathsResponse[],
+      void
+    >({
+      query: () => "/dashboard/learning/paths/newest",
     }),
   }),
 });
 
-export const { useGetQuoteOfTheDayQuery, useGetTodayHabitsQuery } =
-  dashboardApi;
+export const {
+  useGetQuoteOfTheDayQuery,
+  useGetTodayHabitsQuery,
+  useGetNewestLearningPathsQuery,
+} = dashboardApi;

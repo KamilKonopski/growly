@@ -15,3 +15,10 @@ export interface DashboardHabitResponse {
   totalHabits: number;
   todayHabits: DashboardHabit[];
 }
+
+export interface DashboardLearningPathsResponse {
+  id: string;
+  name: string;
+  knownFlashcards: number;
+  totalFlashcards: number;
+}

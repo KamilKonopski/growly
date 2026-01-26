@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 
 import DashboardActivity from "./DashboardActivity/DashboardActivity";
 import DashboardHabits from "./DashboardHabits/DashboardHabits";
+import DashboardLearningPaths from "./DashboardLearningPaths/DashboardLearningPaths";
 import DashboardQuote from "./DashboardQuote/DashboardQuote";
 
 import { componentMountVariants } from "../Habits/config";
@@ -23,7 +24,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.learning}>
-          {/* Tutaj będzie DashboardLearning */}
+          <DashboardLearningPaths />
         </div>
       </div>
 
