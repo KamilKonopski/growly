@@ -1,53 +1,40 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+
+import ErrorText from "../../../common/components/Form/ErrorText/ErrorText";
+import Field from "../../../common/components/Form/Field/Field";
+import FormActions from "../../../common/components/Form/FormActions/FormActions";
+import FormModal from "../../../common/components/Form/FormModal/FormModal";
+
+import { useDirtyForm } from "../../../common/hooks/useDirtyForm";
+import { useFormValidation } from "../../../common/hooks/useFormValidation";
 
 import { useLearning } from "../../../store/hooks/useLearning";
-import type {
-  CreateFlashcardRequest,
-  UpdateFlashcardRequest,
-} from "../../../store/learning/learningApi.types";
 
 import type { Flashcard } from "../../../common/types/learning";
 
 import styles from "./FlashcardCreationModal.module.css";
 
 interface FlashcardCreationModalProps {
-  onClose: () => void;
-  onCloseAttempt: () => void;
-  onDirtyChange: (dirty: boolean) => void;
   flashcard?: Flashcard | null;
   isOpen: boolean;
   shouldResetForm: boolean;
   pathId: string;
+  onClose: () => void;
+  onCloseAttempt: () => void;
+  onDirtyChange: (dirty: boolean) => void;
 }
 
 const FlashcardCreationModal = ({
-  onClose,
-  onCloseAttempt,
-  onDirtyChange,
   flashcard,
   isOpen,
   shouldResetForm,
   pathId,
+  onClose,
+  onCloseAttempt,
+  onDirtyChange,
 }: FlashcardCreationModalProps) => {
   const { createLearningFlashcard, updateLearningFlashcard } = useLearning();
-
-  const [question, setQuestion] = useState(flashcard?.front ?? "");
-  const [answer, setAnswer] = useState(flashcard?.back ?? "");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen || !shouldResetForm) return;
-
-    if (flashcard) {
-      setQuestion(flashcard.front);
-      setAnswer(flashcard.back ?? "");
-    } else {
-      setQuestion("");
-      setAnswer("");
-    }
-
-    onDirtyChange(false);
-  }, [isOpen, shouldResetForm, flashcard, onDirtyChange]);
 
   const initialValues = useMemo(
     () => ({
@@ -57,34 +44,40 @@ const FlashcardCreationModal = ({
     [flashcard],
   );
 
-  const isDirty =
-    question !== initialValues.question || answer !== initialValues.answer;
+  const { values, setValues, isDirty } = useDirtyForm({
+    isOpen,
+    shouldResetForm,
+    initialValues,
+    onDirtyChange,
+  });
 
-  useEffect(() => {
-    onDirtyChange(isDirty);
-  }, [isDirty, onDirtyChange]);
+  const validator = (v: typeof values) => {
+    const errors: Partial<Record<keyof typeof values, string>> = {};
 
-  const handleCloseAttemptInternal = () => {
-    if (!isDirty) onClose();
-    else onCloseAttempt();
+    if (!v.question.trim()) errors.question = "Pytanie jest wymagane";
+    if (!v.answer.trim()) errors.answer = "Odpowiedź jest wymagana";
+
+    return errors;
   };
+
+  const { errors, validate, clearError } = useFormValidation(values, validator);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     setLoading(true);
 
     if (flashcard) {
-      const payload: UpdateFlashcardRequest = {
-        front: question,
-        back: answer,
-      };
-      await updateLearningFlashcard(flashcard.id, payload);
+      await updateLearningFlashcard(flashcard.id, {
+        front: values.question,
+        back: values.answer,
+      });
     } else {
-      const payload: CreateFlashcardRequest = {
-        front: question,
-        back: answer,
-      };
-      await createLearningFlashcard(pathId, payload);
+      await createLearningFlashcard(pathId, {
+        front: values.question,
+        back: values.answer,
+      });
     }
 
     setLoading(false);
@@ -92,49 +85,41 @@ const FlashcardCreationModal = ({
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>
-        {flashcard ? "Edytuj fiszkę" : "Dodaj nową fiszkę"}
-      </h2>
-
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.label}>
-          Pytanie *
-          <input
-            className={styles.input}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Jakie jest pytanie?"
-            required
-          />
-        </label>
-
-        <label className={styles.label}>
-          Odpowiedź *
-          <textarea
-            className={styles.textarea}
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            placeholder="Jaka jest odpowiedź?"
-            rows={4}
-            required
-          />
-        </label>
-
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.cancel}
-            onClick={handleCloseAttemptInternal}
-          >
-            Anuluj
-          </button>
-          <button type="submit" className={styles.submit} disabled={loading}>
-            {loading ? "Zapisywanie..." : flashcard ? "Zapisz zmiany" : "Dodaj"}
-          </button>
-        </div>
-      </form>
-    </div>
+    <FormModal
+      title={flashcard ? "Edytuj fiszkę" : "Dodaj fiszkę"}
+      onSubmit={handleSubmit}
+    >
+      <Field label="Pytanie *">
+        <input
+          id="question"
+          className={styles.input}
+          value={values.question}
+          onChange={(e) => {
+            clearError("question");
+            setValues((v) => ({ ...v, question: e.target.value }));
+          }}
+        />
+        <ErrorText message={errors.question} />
+      </Field>
+      <Field label="Odpowiedź *">
+        <textarea
+          id="answer"
+          className={styles.textarea}
+          rows={4}
+          value={values.answer}
+          onChange={(e) => {
+            clearError("answer");
+            setValues((v) => ({ ...v, answer: e.target.value }));
+          }}
+        />
+        <ErrorText message={errors.answer} />
+      </Field>
+      <FormActions
+        loading={loading}
+        submitLabel={flashcard ? "Zapisz zmiany" : "Dodaj"}
+        onCancel={() => (isDirty ? onCloseAttempt() : onClose())}
+      />
+    </FormModal>
   );
 };
 
