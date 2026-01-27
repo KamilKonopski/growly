@@ -37,6 +37,15 @@ export const habitsApi = createApi({
         body,
       }),
       invalidatesTags: ["Habit"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu nawyku:", error);
+        }
+      },
     }),
     updateHabit: builder.mutation<
       Habit,
@@ -48,6 +57,15 @@ export const habitsApi = createApi({
         body: data,
       }),
       invalidatesTags: ["Habit"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy edycji nawyku:", error);
+        }
+      },
     }),
     deleteHabit: builder.mutation<boolean, string>({
       query: (id) => ({

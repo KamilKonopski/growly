@@ -10,6 +10,7 @@ import type {
   UpdateFlashcardRequest,
   UpdateLearningPathRequest,
 } from "./learningApi.types";
+import { dashboardApi } from "../dashboard/dashboardApi";
 
 export const learningApi = createApi({
   reducerPath: "learningPathsApi",
@@ -35,6 +36,15 @@ export const learningApi = createApi({
         body,
       }),
       invalidatesTags: ["LearningPath"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardLearningPath"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu ścieżki:", error);
+        }
+      },
     }),
     updateLearningPath: builder.mutation<
       LearningPath,

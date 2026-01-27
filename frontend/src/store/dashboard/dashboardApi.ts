@@ -11,7 +11,7 @@ import type {
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
   baseQuery: baseQueryWithAuth,
-  tagTypes: ["DashboardHabits"],
+  tagTypes: ["DashboardHabits", "DashboardLearningPath"],
   endpoints: (builder) => ({
     // ------------------- QUOTE -------------------------------
     getQuoteOfTheDay: builder.query<Quote, void>({
@@ -28,6 +28,7 @@ export const dashboardApi = createApi({
       void
     >({
       query: () => "/dashboard/learning/paths/newest",
+      providesTags: ["DashboardLearningPath"],
     }),
   }),
 });
