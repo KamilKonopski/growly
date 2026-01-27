@@ -137,7 +137,11 @@ export const useLearning = (pathId?: string) => {
 
     // Flashcards
     flashcards:
-      mode === "backend" ? (flashcardQuery.data ?? []) : local.flashcards,
+      mode === "backend"
+        ? (flashcardQuery.data ?? [])
+        : pathId
+          ? local.flashcards.filter((f) => f.pathId === pathId)
+          : [],
     createLearningFlashcard,
     updateLearningFlashcard,
     deleteLearningFlashcard,
