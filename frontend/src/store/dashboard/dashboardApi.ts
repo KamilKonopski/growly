@@ -1,4 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQueryWithAuth } from "../baseQueryWithAuth";
+
 import type {
   DashboardHabitResponse,
   DashboardLearningPathsResponse,
@@ -7,14 +10,7 @@ import type {
 
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ["DashboardHabits"],
   endpoints: (builder) => ({
     // ------------------- QUOTE -------------------------------
