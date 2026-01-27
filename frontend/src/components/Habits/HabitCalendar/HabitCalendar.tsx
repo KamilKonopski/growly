@@ -8,7 +8,7 @@ import HabitCalendarLegend from "./HabitCalendarLegend/HabitCalendarLegend";
 import HabitCalendarMonthModal from "./HabitCalendarMonthModal/HabitCalendarMonthModal";
 import HabitCalendarWeek from "./HabitCalendarWeek/HabitCalendarWeek";
 
-import { componentMountVariants } from "../config";
+import { componentMountVariants } from "../../../common/config/config";
 
 import styles from "./HabitCalendar.module.css";
 
