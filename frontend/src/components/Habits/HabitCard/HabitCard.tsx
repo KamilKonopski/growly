@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+
+import BaseCard from "../../../common/components/BaseCard/BaseCard";
 
 import { useHabits } from "../../../store/hooks/useHabits";
 
 import type { Habit, HabitLog } from "../../../common/types/habit";
-import { componentMountVariants } from "../config";
 
 import styles from "./HabitCard.module.css";
 
@@ -56,17 +56,7 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
   const completedLogs = logs.filter((log) => log.habitId === habit.id).length;
 
   return (
-    <motion.article
-      className={styles.card}
-      variants={componentMountVariants}
-      initial="hidden"
-      animate="visible"
-      whileHover={{
-        y: -8,
-        borderColor: "var(--color-primary)",
-        transition: { duration: 0.2, ease: "easeOut" },
-      }}
-    >
+    <BaseCard>
       <h3 className={styles.name}>{habit.name}</h3>
 
       <p className={styles.created}>
@@ -105,7 +95,7 @@ const HabitCard = ({ habit, logs = [], onEdit }: HabitCardProps) => {
           Edytuj nawyk
         </button>
       </div>
-    </motion.article>
+    </BaseCard>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 
+import BaseCard from "../../../common/components/BaseCard/BaseCard";
 import ConfirmLeavingModal from "../../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
 import EmptyState from "../../../common/components/EmptyState/EmptyState";
 import Flashcards from "../Flashcards/Flashcards";
@@ -13,7 +13,6 @@ import { useModalWithDirtyForm } from "../../../common/hooks/useModalWithDirtyFo
 import { useLearning } from "../../../store/hooks/useLearning";
 
 import type { Flashcard, LearningPath } from "../../../common/types/learning";
-import { componentMountVariants } from "../config";
 
 import styles from "./PathCard.module.css";
 
@@ -42,17 +41,7 @@ const PathCard = ({ path }: PathCardProps) => {
 
   return (
     <>
-      <motion.article
-        className={styles.card}
-        variants={componentMountVariants}
-        initial="hidden"
-        animate="visible"
-        whileHover={{
-          y: -8,
-          borderColor: "var(--color-primary)",
-          transition: { duration: 0.2, ease: "easeOut" },
-        }}
-      >
+      <BaseCard>
         <h3 className={styles.name}>Tytuł: {path.name}</h3>
         {path.description && <p>Opis: {path.description}</p>}
         <div className={styles["progress-bar"]}>
@@ -73,7 +62,7 @@ const PathCard = ({ path }: PathCardProps) => {
           <button onClick={() => setStudyOpen(true)}>Nauka</button>
         </div>
         <button onClick={openAddFlashcard}>Dodaj fiszkę</button>
-      </motion.article>
+      </BaseCard>
       <Modal
         isOpen={showFlashcards}
         onClose={() => setShowFlashcards(false)}

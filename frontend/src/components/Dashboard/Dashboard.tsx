@@ -5,7 +5,7 @@ import DashboardHabits from "./DashboardHabits/DashboardHabits";
 import DashboardLearningPaths from "./DashboardLearningPaths/DashboardLearningPaths";
 import DashboardQuote from "./DashboardQuote/DashboardQuote";
 
-import { componentMountVariants } from "../Habits/config";
+import { componentMountVariants } from "../../common/config/config";
 
 import styles from "./Dashboard.module.css";
 
