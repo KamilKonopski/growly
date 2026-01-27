@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
-import EmptyState from "../../../common/components/EmptyState/EmptyState";
 import DashboardHabitItem from "./DashboardHabitItem/DashboardHabitItem";
+import DashboardSection from "../../../common/components/DashboardSection/DashboardSection";
 
 import { useDashboard } from "../../../store/hooks/useDashboard";
 
@@ -16,35 +14,27 @@ const DashboardHabits = () => {
   const isAllDone = dashboardHabits.totalHabits > 0 && habits.length === 0;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Twoje nawyki</h3>
-      </div>
-
-      {isEmpty ? (
-        <EmptyState>
-          {isAllDone ? (
-            <p>Wszystkie nawyki na dziś wykonane!</p>
-          ) : (
-            <p>Nie masz jeszcze żadnych nawyków.</p>
-          )}
-        </EmptyState>
-      ) : (
-        <ul className={styles.list}>
-          {habits.map((habit) => (
-            <DashboardHabitItem key={habit.id} habit={habit} />
-          ))}
-        </ul>
-      )}
-
-      <div className={styles.actions}>
-        <Link className={styles.button} to="/habits">
-          {isEmpty && !isAllDone
-            ? "Dodaj pierwszy nawyk"
-            : "Zobacz wszystkie nawyki"}
-        </Link>
-      </div>
-    </div>
+    <DashboardSection
+      title="Twoje nawyki"
+      isEmpty={isEmpty}
+      emptyText={
+        isAllDone
+          ? "Wszystkie nawyki na dziś wykonane!"
+          : "Nie masz jeszcze żadnych nawyków."
+      }
+      actionLabel={
+        isEmpty && !isAllDone
+          ? "Dodaj pierwszy nawyk"
+          : "Zobacz wszystkie nawyki"
+      }
+      actionTo="/habits"
+    >
+      <ul className={styles.list}>
+        {habits.map((habit) => (
+          <DashboardHabitItem key={habit.id} habit={habit} />
+        ))}
+      </ul>
+    </DashboardSection>
   );
 };
 

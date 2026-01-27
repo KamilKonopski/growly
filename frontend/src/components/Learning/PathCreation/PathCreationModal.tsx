@@ -1,50 +1,38 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+
+import ErrorText from "../../../common/components/Form/ErrorText/ErrorText";
+import Field from "../../../common/components/Form/Field/Field";
+import FormActions from "../../../common/components/Form/FormActions/FormActions";
+import FormModal from "../../../common/components/Form/FormModal/FormModal";
+
+import { useDirtyForm } from "../../../common/hooks/useDirtyForm";
+import { useFormValidation } from "../../../common/hooks/useFormValidation";
 
 import { useLearning } from "../../../store/hooks/useLearning";
-import type {
-  CreateLearningPathRequest,
-  UpdateLearningPathRequest,
-  LearningPath,
-} from "../../../store/learning/learningApi.types";
+
+import type { LearningPath } from "../../../common/types/learning";
 
 import styles from "./PathCreationModal.module.css";
 
 interface PathCreationModalProps {
-  onClose: () => void;
-  onCloseAttempt: () => void;
-  onDirtyChange: (dirty: boolean) => void;
   path?: LearningPath | null;
   isOpen: boolean;
   shouldResetForm: boolean;
+  onClose: () => void;
+  onCloseAttempt: () => void;
+  onDirtyChange: (dirty: boolean) => void;
 }
 
 const PathCreationModal = ({
-  onClose,
-  onCloseAttempt,
-  onDirtyChange,
   path,
   isOpen,
   shouldResetForm,
+  onClose,
+  onCloseAttempt,
+  onDirtyChange,
 }: PathCreationModalProps) => {
   const { createLearningPath, updateLearningPath } = useLearning();
-
-  const [name, setName] = useState(path?.name ?? "");
-  const [description, setDescription] = useState(path?.description ?? "");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen || !shouldResetForm) return;
-
-    if (path) {
-      setName(path.name);
-      setDescription(path.description ?? "");
-    } else {
-      setName("");
-      setDescription("");
-    }
-
-    onDirtyChange(false);
-  }, [isOpen, shouldResetForm, path, onDirtyChange]);
 
   const initialValues = useMemo(
     () => ({
@@ -54,34 +42,39 @@ const PathCreationModal = ({
     [path],
   );
 
-  const isDirty =
-    name !== initialValues.name || description !== initialValues.description;
+  const { values, setValues, isDirty } = useDirtyForm({
+    isOpen,
+    shouldResetForm,
+    initialValues,
+    onDirtyChange,
+  });
 
-  useEffect(() => {
-    onDirtyChange(isDirty);
-  }, [isDirty, onDirtyChange]);
+  const validator = (v: typeof values) => {
+    const errors: Partial<Record<keyof typeof values, string>> = {};
 
-  const handleCloseAttemptInternal = () => {
-    if (!isDirty) onClose();
-    else onCloseAttempt();
+    if (!v.name.trim()) errors.name = "Nazwa jest wymagana";
+
+    return errors;
   };
+
+  const { errors, validate, clearError } = useFormValidation(values, validator);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     setLoading(true);
 
     if (path) {
-      const payload: UpdateLearningPathRequest = {
-        name,
-        description: description || undefined,
-      };
-      await updateLearningPath(path.id, payload);
+      await updateLearningPath(path.id, {
+        name: values.name,
+        description: values.description || undefined,
+      });
     } else {
-      const payload: CreateLearningPathRequest = {
-        name,
-        description: description || undefined,
-      };
-      await createLearningPath(payload);
+      await createLearningPath({
+        name: values.name,
+        description: values.description || undefined,
+      });
     }
 
     setLoading(false);
@@ -89,48 +82,39 @@ const PathCreationModal = ({
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>
-        {path ? "Edytuj ścieżkę nauki" : "Dodaj nową ścieżkę"}
-      </h2>
-
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.label}>
-          Nazwa ścieżki *
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Np. Frontend Developer"
-            required
-          />
-        </label>
-
-        <label className={styles.label}>
-          Opis (opcjonalnie)
-          <textarea
-            className={styles.textarea}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Czego dotyczy ta ścieżka?"
-            rows={4}
-          />
-        </label>
-
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.cancel}
-            onClick={handleCloseAttemptInternal}
-          >
-            Anuluj
-          </button>
-          <button type="submit" className={styles.submit} disabled={loading}>
-            {loading ? "Zapisywanie..." : path ? "Zapisz zmiany" : "Dodaj"}
-          </button>
-        </div>
-      </form>
-    </div>
+    <FormModal
+      title={path ? "Edytuj ścieżkę" : "Dodaj ścieżkę"}
+      onSubmit={handleSubmit}
+    >
+      <Field label="Nazwa *">
+        <input
+          id="path-name"
+          className={styles.input}
+          value={values.name}
+          onChange={(e) => {
+            clearError("name");
+            setValues((v) => ({ ...v, name: e.target.value }));
+          }}
+        />
+        <ErrorText message={errors.name} />
+      </Field>
+      <Field label="Opis (opcjonalnie)">
+        <textarea
+          id="path-desc"
+          className={styles.textarea}
+          rows={4}
+          value={values.description}
+          onChange={(e) =>
+            setValues((v) => ({ ...v, description: e.target.value }))
+          }
+        />
+      </Field>
+      <FormActions
+        loading={loading}
+        submitLabel={path ? "Zapisz zmiany" : "Dodaj"}
+        onCancel={() => (isDirty ? onCloseAttempt() : onClose())}
+      />
+    </FormModal>
   );
 };
 

@@ -1,0 +1,36 @@
+.container {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 18px 18px 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--font-alt);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.button {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.button:hover {
+  background: rgba(129, 161, 255, 0.12);
+  transform: translateY(-1px);
+  text-decoration: none;
+}

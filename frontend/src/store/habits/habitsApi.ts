@@ -1,4 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQueryWithAuth } from "../baseQueryWithAuth";
 
 import { dashboardApi } from "../dashboard/dashboardApi";
 
@@ -16,14 +18,7 @@ import type {
 
 export const habitsApi = createApi({
   reducerPath: "habitsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ["Habit", "HabitLog", "HabitStatus"],
   endpoints: (builder) => ({
     // ------------------- HABITS -------------------------------
@@ -42,6 +37,15 @@ export const habitsApi = createApi({
         body,
       }),
       invalidatesTags: ["Habit"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu nawyku:", error);
+        }
+      },
     }),
     updateHabit: builder.mutation<
       Habit,
@@ -53,6 +57,15 @@ export const habitsApi = createApi({
         body: data,
       }),
       invalidatesTags: ["Habit"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardHabits"]));
+        } catch (error) {
+          console.error("Błąd przy edycji nawyku:", error);
+        }
+      },
     }),
     deleteHabit: builder.mutation<boolean, string>({
       query: (id) => ({

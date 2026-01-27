@@ -7,7 +7,8 @@ const HabitLineChart = lazy(() => import("./Charts/HabitLineChart"));
 import EmptyState from "../../../common/components/EmptyState/EmptyState";
 
 import { useHabits } from "../../../store/hooks/useHabits";
-import { componentMountVariants, ranges } from "../config";
+import { componentMountVariants } from "../../../common/config/config";
+import { ranges } from "../config";
 import {
   mapLogsPerHabit,
   mapLogsToTrend,
@@ -24,29 +25,29 @@ const HabitStats = () => {
       new Date(Date.now() - (lastDays - 1) * 86400000)
         .toISOString()
         .slice(0, 10),
-    [lastDays]
+    [lastDays],
   );
   const endDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const { data: rangeLogs } = getHabitLogsByRange(
     { startDate, endDate },
-    { skip: mode !== "backend" }
+    { skip: mode !== "backend" },
   );
 
   const finalLogs = useMemo(
     () =>
       mode === "backend"
-        ? rangeLogs ?? []
+        ? (rangeLogs ?? [])
         : logs.filter((l) => l.date >= startDate && l.date <= endDate),
-    [mode, rangeLogs, logs, startDate, endDate]
+    [mode, rangeLogs, logs, startDate, endDate],
   );
   const perHabitData = useMemo(
     () => mapLogsPerHabit(habits, finalLogs, lastDays),
-    [habits, finalLogs, lastDays]
+    [habits, finalLogs, lastDays],
   );
   const trendData = useMemo(
     () => mapLogsToTrend(finalLogs, lastDays),
-    [finalLogs, lastDays]
+    [finalLogs, lastDays],
   );
 
   if (!finalLogs.length) {

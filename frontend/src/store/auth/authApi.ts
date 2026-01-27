@@ -1,4 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQueryWithAuth } from "../baseQueryWithAuth";
+
 import type {
   AuthResponse,
   CheckEmailRequest,
@@ -9,34 +12,32 @@ import type {
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/auth",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
-      query: (body) => ({ url: "/login", method: "POST", body }),
+      query: (body) => ({ url: "/auth/login", method: "POST", body }),
+    }),
+    logout: builder.mutation<{ message: string }, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
     }),
     register: builder.mutation<AuthResponse, RegisterRequest>({
-      query: (body) => ({ url: "/register", method: "POST", body }),
+      query: (body) => ({ url: "/auth/register", method: "POST", body }),
     }),
     checkEmail: builder.mutation<{ available: boolean }, CheckEmailRequest>({
-      query: (body) => ({ url: "/check-email", method: "POST", body }),
+      query: (body) => ({ url: "/auth/check-email", method: "POST", body }),
     }),
     me: builder.query<User, void>({
-      query: () => "/me",
+      query: () => "/auth/me",
     }),
   }),
 });
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
   useCheckEmailMutation,
   useMeQuery,

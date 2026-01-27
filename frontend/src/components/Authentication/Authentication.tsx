@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../store/hooks/useAuth";
+import type { RootState } from "../../store/store";
+import { clearLogoutFlag } from "../../store/slices/appSlice";
 
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
@@ -11,6 +15,20 @@ import styles from "./Authentication.module.css";
 const Authentication = () => {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [isFirstMount, setIsFirstMount] = useState(true);
+  const dispatch = useDispatch();
+  const justLoggedOut = useSelector(
+    (state: RootState) => state.app.justLoggedOut,
+  );
+
+  useEffect(() => {
+    if (justLoggedOut) {
+      const timer = setTimeout(() => {
+        dispatch(clearLogoutFlag());
+      }, 1200);
+
+      return () => clearTimeout(timer);
+    }
+  }, [justLoggedOut, dispatch]);
 
   const navigate = useNavigate();
   const { demoLogin } = useAuth();
@@ -47,6 +65,15 @@ const Authentication = () => {
           Śledź swoje nawyki. Rozwijaj się każdego dnia
         </motion.p>
       </div>
+
+      {justLoggedOut && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          Pomyślnie wylogowano!
+        </motion.div>
+      )}
 
       {/* TABS */}
       <motion.div

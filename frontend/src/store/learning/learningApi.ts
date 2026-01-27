@@ -1,4 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQueryWithAuth } from "../baseQueryWithAuth";
+
 import type {
   CreateFlashcardRequest,
   CreateLearningPathRequest,
@@ -7,17 +10,11 @@ import type {
   UpdateFlashcardRequest,
   UpdateLearningPathRequest,
 } from "./learningApi.types";
+import { dashboardApi } from "../dashboard/dashboardApi";
 
 export const learningApi = createApi({
   reducerPath: "learningPathsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ["LearningPath", "Flashcards"],
   endpoints: (builder) => ({
     // ------------------- LEARNING PATHS -------------------
@@ -39,6 +36,15 @@ export const learningApi = createApi({
         body,
       }),
       invalidatesTags: ["LearningPath"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(dashboardApi.util.invalidateTags(["DashboardLearningPath"]));
+        } catch (error) {
+          console.error("Błąd przy tworzeniu ścieżki:", error);
+        }
+      },
     }),
     updateLearningPath: builder.mutation<
       LearningPath,

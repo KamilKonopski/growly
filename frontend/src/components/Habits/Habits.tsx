@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus } from "lucide-react";
 
 import ConfirmLeavingModal from "../HabitCreation/ConfirmLeavingModal/ConfirmLeavingModal";
@@ -8,100 +8,52 @@ import HabitList from "./HabitList/HabitList";
 import HabitStats from "./HabitStats/HabitStats";
 import Modal from "../../common/components/Modal/Modal";
 
+import { useModalWithDirtyForm } from "../../common/hooks/useModalWithDirtyForm";
+
 import type { Habit } from "../../common/types/habit";
 
 import styles from "./Habits.module.css";
 
 const Habits = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [shouldReopen, setShouldReopen] = useState(false);
-  const [isDirty, setIsDirty] = useState(false);
+  const modal = useModalWithDirtyForm();
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
-  const [shouldResetForm, setShouldResetForm] = useState(false);
 
-  const handleOpenModal = () => {
+  const openAdd = () => {
     setEditingHabit(null);
-    setShouldResetForm(true);
-    setOpenModal(true);
+    modal.openModal();
   };
 
-  const handleEditHabit = (habit: Habit) => {
+  const openEdit = (habit: Habit) => {
     setEditingHabit(habit);
-    setShouldResetForm(true);
-    setOpenModal(true);
+    modal.openModal();
   };
-
-  const handleForceCloseModal = () => {
-    setIsDirty(false);
-    setEditingHabit(null);
-    setShouldResetForm(true);
-    setOpenModal(false);
-  };
-
-  const handleCloseAttempt = () => {
-    if (isDirty) {
-      setOpenModal(false);
-      setShowConfirm(true);
-      setShouldReopen(true);
-    } else {
-      setOpenModal(false);
-    }
-  };
-
-  const handleConfirmStay = () => {
-    setShowConfirm(false);
-
-    if (shouldReopen) {
-      setOpenModal(true);
-      setShouldReopen(false);
-    }
-  };
-
-  const handleConfirmLeave = () => {
-    setIsDirty(false);
-    setEditingHabit(null);
-    setShouldResetForm(true);
-    setShowConfirm(false);
-    setShouldReopen(false);
-  };
-
-  useEffect(() => {
-    if (openModal) {
-      setShouldResetForm(false);
-    }
-  }, [openModal]);
 
   return (
     <>
       <section className={styles.container}>
-        <div className={styles.button_container}>
-          <button className={styles.button} onClick={handleOpenModal}>
-            <Plus />
-            Dodaj nawyk
+        <div className={styles["button_container"]}>
+          <button className={styles.button} onClick={openAdd}>
+            <Plus /> Dodaj nawyk
           </button>
         </div>
-
-        <HabitList onEdit={handleEditHabit} />
+        <HabitList onEdit={openEdit} />
         <HabitCalendar />
         <HabitStats />
       </section>
-
-      <Modal isOpen={openModal} keepMounted onClose={handleCloseAttempt}>
+      <Modal isOpen={modal.open} keepMounted onClose={modal.attemptClose}>
         <HabitCreationModal
-          isOpen={openModal}
-          shouldResetForm={shouldResetForm}
-          onClose={handleForceCloseModal}
-          onCloseAttempt={handleCloseAttempt}
-          onDirtyChange={setIsDirty}
           habit={editingHabit}
+          isOpen={modal.open}
+          shouldResetForm={modal.shouldResetForm}
+          onClose={modal.forceClose}
+          onCloseAttempt={modal.attemptClose}
+          onDirtyChange={modal.setIsDirty}
         />
       </Modal>
-
-      <Modal isOpen={showConfirm} onClose={handleConfirmStay}>
+      <Modal isOpen={modal.showConfirm} onClose={modal.confirmStay}>
         <ConfirmLeavingModal
-          onCancel={handleConfirmStay}
-          onConfirm={handleConfirmLeave}
+          onCancel={modal.confirmStay}
+          onConfirm={modal.confirmLeave}
         />
       </Modal>
     </>
