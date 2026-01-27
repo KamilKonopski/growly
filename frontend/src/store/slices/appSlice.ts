@@ -4,11 +4,13 @@ import type { User } from "../auth/authApi.types";
 interface AppState {
   user: User | null;
   mode: "demo" | "backend" | null;
+  justLoggedOut: boolean;
 }
 
 const initialState: AppState = {
   user: null,
   mode: null,
+  justLoggedOut: false,
 };
 
 const appSlice = createSlice({
@@ -24,9 +26,13 @@ const appSlice = createSlice({
     logout(state) {
       state.user = null;
       state.mode = null;
+      state.justLoggedOut = true;
+    },
+    clearLogoutFlag(state) {
+      state.justLoggedOut = false;
     },
   },
 });
 
-export const { setUser, setMode, logout } = appSlice.actions;
+export const { setUser, setMode, logout, clearLogoutFlag } = appSlice.actions;
 export default appSlice.reducer;

@@ -1,14 +1,23 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   useLoginMutation,
   useRegisterMutation,
   useCheckEmailMutation,
+  useLogoutMutation,
+  authApi,
 } from "../auth/authApi";
-import { setUser, setMode } from "../slices/appSlice";
+
+import { setUser, setMode, logout as logoutAction } from "../slices/appSlice";
+
+import type { RootState } from "../store";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
+  const mode = useSelector((state: RootState) => state.app.mode);
+
   const [loginMutation] = useLoginMutation();
+  const [logoutMutation] = useLogoutMutation();
   const [registerMutation] = useRegisterMutation();
   const [checkEmailMutation] = useCheckEmailMutation();
 
@@ -22,11 +31,27 @@ export const useAuth = () => {
     return res;
   };
 
+  const logout = async () => {
+    try {
+      if (mode === "backend") {
+        await logoutMutation().unwrap();
+      }
+    } catch (e) {
+      console.warn("Logout backend error (ignored)", e);
+    } finally {
+      localStorage.removeItem("token");
+
+      dispatch(logoutAction());
+
+      dispatch(authApi.util.resetApiState());
+    }
+  };
+
   const register = async (
     name: string,
     email: string,
     password: string,
-    confirmPassword: string
+    confirmPassword: string,
   ) => {
     const res = await registerMutation({
       name,
@@ -52,5 +77,5 @@ export const useAuth = () => {
     dispatch(setMode("demo"));
   };
 
-  return { login, register, checkEmail, demoLogin };
+  return { login, logout, register, checkEmail, demoLogin };
 };
