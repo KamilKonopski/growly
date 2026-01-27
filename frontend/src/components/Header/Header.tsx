@@ -37,8 +37,8 @@ const Header = ({ userName }: HeaderProps) => {
       <div className={styles.user} ref={userRef}>
         <p>Witaj {userName ?? "Gościu"}!</p>
         <img
-          src="/avatar.png"
-          alt="avatar"
+          src="/placeholder.png"
+          alt="placeholder avatara"
           className={styles.avatar}
           onClick={() => setMenuOpen((prev) => !prev)}
         />
