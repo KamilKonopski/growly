@@ -27,9 +27,13 @@ const LoginForm = ({ isFirstMount }: Props) => {
     setLoading(true);
 
     try {
-      await login(email, password);
+      const res = await login(email, password);
 
-      navigate("/dashboard", { replace: true });
+      if (res.user && res.token) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        setErrors(["Nie udało się zalogować"]);
+      }
     } catch (err) {
       const error = err as FetchBaseQueryError;
       const data = error.data as
