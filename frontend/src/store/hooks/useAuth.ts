@@ -72,6 +72,7 @@ export const useAuth = () => {
       id: "demo-user",
       name: "Demówka",
       email: "demo@example.com",
+      createdAt: "01.01.2026",
     };
     dispatch(setUser(demoUser));
     dispatch(setMode("demo"));
