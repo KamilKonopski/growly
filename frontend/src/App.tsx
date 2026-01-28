@@ -8,6 +8,7 @@ interface JwtUser {
   id: string;
   name: string;
   email: string;
+  createdAt: string;
   iat: number;
   exp: number;
 }
@@ -32,6 +33,7 @@ const App = () => {
               id: decoded.id,
               name: decoded.name,
               email: decoded.email,
+              createdAt: decoded.createdAt,
             }),
           );
           dispatch(setMode("backend"));
