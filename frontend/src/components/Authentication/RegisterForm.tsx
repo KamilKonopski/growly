@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+
 import { useAuth } from "../../store/hooks/useAuth";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
 import styles from "./Authentication.module.css";
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  onRegistered: () => void;
+}
+
+const RegisterForm = ({ onRegistered }: RegisterFormProps) => {
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -62,7 +68,9 @@ const RegisterForm = () => {
       await register(regName, regEmail, regPassword, regConfirm);
 
       setInfo("Konto utworzone! Za 3 sekundy nastąpi przekierowanie...");
-      setTimeout(() => setInfo(""), 3000);
+      setTimeout(() => {
+        onRegistered();
+      }, 3000);
     } catch (err) {
       const error = err as FetchBaseQueryError;
       const data = error.data as
