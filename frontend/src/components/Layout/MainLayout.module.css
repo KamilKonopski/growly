@@ -16,3 +16,14 @@
   background-color: var(--color-bg);
   overflow-y: auto;
 }
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 16px;
+    padding-bottom: 90px;
+  }
+}

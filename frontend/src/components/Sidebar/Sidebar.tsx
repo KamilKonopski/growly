@@ -1,11 +1,4 @@
-import {
-  Home,
-  ListChecks,
-  BookOpen,
-  BarChart3,
-  Settings,
-  SquarePlus,
-} from "lucide-react";
+import { Home, ListChecks, BookOpen, BarChart3, Settings } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
 
@@ -22,12 +15,6 @@ const Sidebar = () => {
       </div>
       <footer className={styles.footer}>
         <SidebarItem icon={<Settings />} label="Ustawienia" to="/settings" />
-        <SidebarItem
-          icon={<SquarePlus size={26} />}
-          label="Mój Github"
-          href="https://github.com/kamilkonopski"
-        />
-        <span className={styles.version}>v0.1.0</span>
       </footer>
     </aside>
   );
