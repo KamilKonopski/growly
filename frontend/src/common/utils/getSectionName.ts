@@ -4,6 +4,7 @@ const SECTION_MAP: Record<string, string> = {
   "/habits": "Nawyki",
   "/learning": "Nauka",
   "/stats": "Statystyki",
+  "/profile": "Profil",
   "/settings": "Ustawienia systemu",
 };
 

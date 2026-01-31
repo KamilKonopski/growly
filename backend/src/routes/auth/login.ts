@@ -40,17 +40,27 @@ router.post(
 
     // Token JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, name: user.name },
+      {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        createdAt: user.createdAt,
+      },
       process.env.JWT_SECRET || "supersecret",
-      { expiresIn: "2h" }
+      { expiresIn: "2h" },
     );
 
     res.json({
       message: "Zalogowano pomyślnie",
       token,
-      user: { id: user.id, email: user.email, name: user.name },
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        createdAt: user.createdAt,
+      },
     });
-  }
+  },
 );
 
 export default router;

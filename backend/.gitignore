@@ -41,3 +41,4 @@ coverage/
 
 /src/data/*
 !/src/data/.gitkeep
+!/src/data/quotes.json

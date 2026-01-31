@@ -34,7 +34,9 @@
   opacity: 0;
   pointer-events: none;
   transform: translateX(-10px);
-  transition: opacity 0.15s ease, transform 0.2 ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.2 ease;
 }
 
 .link:hover .tooltip {
@@ -48,4 +50,14 @@
 
 .active .icon {
   color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    display: none;
+  }
+
+  .icon {
+    font-size: 24px;
+  }
 }

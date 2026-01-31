@@ -19,6 +19,7 @@ router.get("/", authMiddleware, (req: AuthRequest, res: Response) => {
     id: user.id,
     email: user.email,
     name: user.name,
+    createdAt: user.createdAt,
   });
 });
 

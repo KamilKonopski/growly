@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1",
+    "type": "start",
+    "text": "Każda zmiana zaczyna się od jednego, małego kroku.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "2",
+    "type": "start",
+    "text": "Nie musisz być gotowy. Wystarczy, że zaczniesz.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "3",
+    "type": "start",
+    "text": "Postęp zaczyna się w momencie, gdy próbujesz.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "4",
+    "type": "start",
+    "text": "Małe działania dziś tworzą duże efekty jutro.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "5",
+    "type": "start",
+    "text": "Najlepszy moment na start był wczoraj. Drugi najlepszy jest teraz.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "6",
+    "type": "continue",
+    "text": "Konsekwencja wygrywa z motywacją.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "7",
+    "type": "continue",
+    "text": "Postęp buduje się dzień po dniu.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "8",
+    "type": "continue",
+    "text": "Jesteś bliżej celu, niż myślisz. Działaj dalej.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "9",
+    "type": "continue",
+    "text": "To, co robisz codziennie, ma większe znaczenie niż to, co robisz od czasu do czasu.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "10",
+    "type": "continue",
+    "text": "Regularność tworzy momentum.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "11",
+    "type": "continue",
+    "text": "Małe zwycięstwa szybciej się sumują, niż się spodziewasz.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "12",
+    "type": "continue",
+    "text": "Dyscyplina zamienia wysiłek w efekt.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "13",
+    "type": "continue",
+    "text": "Skup się na postępie, nie na perfekcji.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "14",
+    "type": "continue",
+    "text": "Każde powtórzenie czyni Cię lepszym.",
+    "author": "Nieznany"
+  },
+  {
+    "id": "15",
+    "type": "continue",
+    "text": "Buduj dalej. Nawet wolny postęp to nadal postęp.",
+    "author": "Nieznany"
+  }
+]

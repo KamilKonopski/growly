@@ -38,6 +38,8 @@ const Authentication = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const switchToLogin = () => setMode("login");
+
   const handleDemoLogin = () => {
     demoLogin();
     navigate("/dashboard");
@@ -109,7 +111,7 @@ const Authentication = () => {
           {mode === "login" ? (
             <LoginForm isFirstMount={isFirstMount} />
           ) : (
-            <RegisterForm />
+            <RegisterForm onRegistered={switchToLogin} />
           )}
         </motion.div>
       </div>

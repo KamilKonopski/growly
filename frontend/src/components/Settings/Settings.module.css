@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.settings-container {
+  width: 80%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 0;
+  background-color: var(--color-card);
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: 12px;
+}
+
+.info-container {
+  text-align: center;
+  width: 100%;
+}
+
+.version {
+  display: block;
+  color: var(--color-text-secondary);
+  padding: 20px 0;
+}
