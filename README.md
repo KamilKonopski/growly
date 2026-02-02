@@ -8,8 +8,6 @@
 > For the **full experience (with local backend and data persistence)**, please see **Installation & Running the App** below.
 
 > A web application for habit tracking, learning, and personal development, featuring data visualization and flashcards.
->
-> The Growly project was created as a student project as part of computer science studies.
 
 ---
 
