@@ -4,6 +4,7 @@ import { authApi } from "./auth/authApi";
 import { habitsApi } from "./habits/habitsApi";
 import { learningApi } from "./learning/learningApi";
 import { dashboardApi } from "./dashboard/dashboardApi";
+import { statsApi } from "./stats/statsApi";
 
 import appReducer from "./slices/appSlice";
 import habitsReducer from "./slices/habitsSlice";
@@ -18,13 +19,15 @@ export const store = configureStore({
     [learningApi.reducerPath]: learningApi.reducer,
     learning: learningReducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
+    [statsApi.reducerPath]: statsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(habitsApi.middleware)
       .concat(learningApi.middleware)
-      .concat(dashboardApi.middleware),
+      .concat(dashboardApi.middleware)
+      .concat(statsApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
