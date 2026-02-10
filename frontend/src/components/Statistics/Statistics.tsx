@@ -1,10 +1,18 @@
-import EmptyState from "../../common/components/EmptyState/EmptyState";
+import HabitLineChart from "./HabitsLineChart/HabitsLineChart";
+import LearningBarChart from "./LearningBarChart/LearningBarChart";
+import StatsOverview from "./StatsOverview/StatsOverview";
+import StatsSummary from "./StatsSummary/StatsSummary";
+
+import styles from "./Statistics.module.css";
 
 const Statistics = () => {
   return (
-    <EmptyState>
-      <p>Widok statystyk w budowie :)</p>
-    </EmptyState>
+    <section className={styles.container}>
+      <StatsOverview />
+      <HabitLineChart />
+      <LearningBarChart />
+      <StatsSummary />
+    </section>
   );
 };
 
