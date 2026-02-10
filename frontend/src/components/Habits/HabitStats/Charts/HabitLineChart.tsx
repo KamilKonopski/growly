@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import CustomTooltip from "../CustomTooltip/CustomTooltip";
+import CustomTooltip from "../../../../common/components/CustomTooltip/CustomTooltip";
 
 import styles from "./HabitLineChart.module.css";
 

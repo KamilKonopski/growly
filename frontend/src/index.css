@@ -150,6 +150,12 @@ pre,
   background: var(--color-secondary);
 }
 
+/* rechards outline */
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus {
+  outline: none;
+}
+
 /* Main content padding */
 main {
   padding: 2rem;

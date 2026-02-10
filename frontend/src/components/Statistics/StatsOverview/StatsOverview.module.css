@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.value {
+  font-size: 28px;
+  font-weight: 600;
+}
