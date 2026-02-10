@@ -16,7 +16,7 @@ export const getHabitStats = (userId: string): HabitStats => {
 
   for (let i = LAST_DAYS - 1; i >= 0; i--) {
     const date = new Date();
-    date.setDate(date.getDate() - 1);
+    date.setDate(date.getDate() - i);
     const dateStr = date.toISOString().slice(0, 10);
 
     const statuses = getHabitsStatusForDate(userId, dateStr);
@@ -30,7 +30,20 @@ export const getHabitStats = (userId: string): HabitStats => {
     });
   }
 
-  const totalPossible = habits.length * LAST_DAYS;
+  const totalPossible = habits.reduce((sum, habit) => {
+    switch (habit.frequency) {
+      case "daily":
+        return sum + LAST_DAYS;
+      case "weekly":
+        return sum + 1;
+      case "every_x_days": {
+        const interval = habit.intervalDays ?? 2;
+        return sum + Math.floor(LAST_DAYS / interval);
+      }
+      default:
+        return sum;
+    }
+  }, 0);
 
   const completionRate =
     totalPossible === 0
