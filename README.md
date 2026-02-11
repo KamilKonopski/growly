@@ -61,12 +61,12 @@ Growly supports two application modes:
    - Flashcards tab for reviewing materials,
    - Flashcard study mode ("know / don`t know") with progress statistics.
 
-4. **Statistics** (SOON)
+4. **Statistics**
    - Analysis of user activity over time,
    - Heatmaps, line charts, and learning path comparisons,
    - Insights and achievement summaries.
 
-5. **Settings** (SOON)
+5. **Settings**
    - User profile management,
    - Preferences and data export/import,
    - Notifications and version information.
