@@ -1,8 +1,17 @@
+import { motion } from "framer-motion";
+
+import { componentMountVariants } from "../../common/config/config";
+
 import styles from "./Settings.module.css";
 
 const Settings = () => {
   return (
-    <section className={styles.container}>
+    <motion.section
+      variants={componentMountVariants}
+      initial="hidden"
+      animate="visible"
+      className={styles.container}
+    >
       <div className={styles["settings-container"]}>
         <div className={styles["info-container"]}>
           <p>
@@ -14,7 +23,7 @@ const Settings = () => {
           <span className={styles.version}>v0.1.0</span>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

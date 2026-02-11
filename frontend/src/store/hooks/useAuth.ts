@@ -6,6 +6,8 @@ import {
   useCheckEmailMutation,
   useLogoutMutation,
   authApi,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
 } from "../auth/authApi";
 
 import { setUser, setMode, logout as logoutAction } from "../slices/appSlice";
@@ -20,6 +22,8 @@ export const useAuth = () => {
   const [logoutMutation] = useLogoutMutation();
   const [registerMutation] = useRegisterMutation();
   const [checkEmailMutation] = useCheckEmailMutation();
+  const [updateProfileMutation] = useUpdateProfileMutation();
+  const [changePasswordMutation] = useChangePasswordMutation();
 
   const login = async (email: string, password: string) => {
     const res = await loginMutation({ email, password }).unwrap();
@@ -67,6 +71,22 @@ export const useAuth = () => {
     return res.available;
   };
 
+  const updateProfile = async (name: string) => {
+    const res = await updateProfileMutation({ name }).unwrap();
+    dispatch(setUser(res.user));
+    return res;
+  };
+
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string,
+  ) => {
+    return await changePasswordMutation({
+      currentPassword,
+      newPassword,
+    }).unwrap();
+  };
+
   const demoLogin = () => {
     const demoUser = {
       id: "demo-user",
@@ -78,5 +98,13 @@ export const useAuth = () => {
     dispatch(setMode("demo"));
   };
 
-  return { login, logout, register, checkEmail, demoLogin };
+  return {
+    login,
+    logout,
+    register,
+    checkEmail,
+    updateProfile,
+    changePassword,
+    demoLogin,
+  };
 };
