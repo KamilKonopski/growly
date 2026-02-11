@@ -13,6 +13,7 @@ import type {
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithAuth,
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (body) => ({ url: "/auth/login", method: "POST", body }),
@@ -31,6 +32,28 @@ export const authApi = createApi({
     }),
     me: builder.query<User, void>({
       query: () => "/auth/me",
+      providesTags: ["User"],
+    }),
+    updateProfile: builder.mutation<
+      { message: string; user: User },
+      { name: string }
+    >({
+      query: (body) => ({
+        url: "/auth/update-profile",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    changePassword: builder.mutation<
+      { message: string },
+      { currentPassword: string; newPassword: string }
+    >({
+      query: (body) => ({
+        url: "/auth/change-password",
+        method: "PUT",
+        body,
+      }),
     }),
   }),
 });
@@ -41,4 +64,6 @@ export const {
   useRegisterMutation,
   useCheckEmailMutation,
   useMeQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
 } = authApi;
