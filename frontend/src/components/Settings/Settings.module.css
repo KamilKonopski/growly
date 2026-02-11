@@ -20,6 +20,10 @@
   border-radius: 12px;
 }
 
+.mode {
+  margin: 10px 0 20px;
+}
+
 .info-container {
   text-align: center;
   width: 100%;
