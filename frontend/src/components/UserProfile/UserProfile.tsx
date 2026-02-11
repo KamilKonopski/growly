@@ -1,47 +1,39 @@
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
+import { useMeQuery } from "../../store/auth/authApi";
 import type { RootState } from "../../store/store";
+
+import ProfileInfoSection from "./ProfileInfoSection/ProfileInfoSection";
+import SecuritySection from "./SecuritySection/SecuritySection";
+
+import { componentMountVariants } from "../../common/config/config";
 
 import styles from "./UserProfile.module.css";
 
 const UserProfile = () => {
-  const user = useSelector((state: RootState) => state.app.user);
+  const demoUser = useSelector((state: RootState) => state.app.user);
+  const mode = useSelector((state: RootState) => state.app.mode);
+
+  const { data: backendUser } = useMeQuery(undefined, {
+    skip: mode !== "backend",
+  });
+
+  const user = mode === "backend" ? backendUser : demoUser;
+
   return (
-    <section className={styles.container}>
+    <motion.section
+      variants={componentMountVariants}
+      initial="hidden"
+      animate="visible"
+      className={styles.container}
+    >
       <div className={styles["info-container"]}>
-        <div className={styles.avatar}>
-          <img src="/placeholder.png" alt="avatar placeholder" />
-        </div>
-        <div className={styles["info-text"]}>
-          <p>Twoje imię: {user?.name}</p>
-          <p>Twój email: {user?.email}</p>
-          <p>
-            Członek od:{" "}
-            {new Date(user?.createdAt ?? Date.now()).toLocaleDateString(
-              "pl-PL",
-            )}
-          </p>
-          <button className={styles["edit-btn"]} disabled>
-            Edytuj profil
-          </button>
-        </div>
-        <div className={styles.line}></div>
-        <div className={styles["security-container"]}>
-          <h2>Bezpieczeństwo konta</h2>
-          <div className={styles["password-container"]}>
-            <div className={styles.password}>
-              <p className={styles["password-text"]}>Hasło</p>
-              <p className={styles["password-subtext"]}>
-                Zmień swoje hasło by zalogować się do konta
-              </p>
-            </div>
-            <button className={styles["change-btn"]} disabled>
-              Zmień hasło
-            </button>
-          </div>
-        </div>
+        <ProfileInfoSection user={user} mode={mode} />
+        <div className={styles.line} />
+        <SecuritySection mode={mode} />
       </div>
-    </section>
+    </motion.section>
   );
 };
 
