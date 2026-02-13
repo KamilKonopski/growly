@@ -18,6 +18,8 @@ export const useAuth = () => {
   const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.app.mode);
 
+  const isBackendEnabled = import.meta.env.VITE_ENABLE_BACKEND === "true";
+
   const [loginMutation] = useLoginMutation();
   const [logoutMutation] = useLogoutMutation();
   const [registerMutation] = useRegisterMutation();
@@ -67,6 +69,10 @@ export const useAuth = () => {
   };
 
   const checkEmail = async (email: string) => {
+    if (!isBackendEnabled) {
+      return true;
+    }
+
     const res = await checkEmailMutation({ email }).unwrap();
     return res.available;
   };

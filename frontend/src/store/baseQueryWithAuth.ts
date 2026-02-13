@@ -3,8 +3,10 @@ import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 
 import { logout } from "./slices/appSlice";
 
+const isBackendEnabled = import.meta.env.VITE_ENABLE_BACKEND === "true";
+
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: import.meta.env.VITE_API_URL,
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("token");
     if (token) headers.set("Authorization", `Bearer ${token}`);
@@ -17,6 +19,15 @@ export const baseQueryWithAuth: BaseQueryFn = async (
   api,
   extraOptions,
 ) => {
+  if (!isBackendEnabled) {
+    return {
+      error: {
+        status: "CUSTOM_ERROR",
+        error: "BACKEND_DISABLED",
+      },
+    };
+  }
+
   const result = await rawBaseQuery(args, api, extraOptions);
 
   if (result.error?.status === 401) {
