@@ -112,6 +112,12 @@ npm install
 npm run dev
 ```
 
+Add .env file in frontend folder
+
+VITE_ENABLE_BACKEND=true
+
+VITE_API_URL=http://localhost:5000/api
+
 Backend
 ```bash
 cd growly/backend
